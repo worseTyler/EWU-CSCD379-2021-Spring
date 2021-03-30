@@ -32,7 +32,7 @@ namespace SecretSanta.Web
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello from Web!");
+                    await context.Response.WriteAsync("https://t3hwin.com/do-you-need-some-help-connecting-to-the-web/");
                 });
             });
         }
