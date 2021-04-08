@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Web.ViewModels
 {
-    public class Group
+    public class GroupViewModel
     {
         [Required]
         public string GroupName;
 
-        public List<User> Users;
+        public List<UserViewModel> Users;
     }
 }

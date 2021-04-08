@@ -9,9 +9,9 @@ namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        static List<User> Users = new List<User>
+        static List<UserViewModel> Users = new List<UserViewModel>
         {
-            new User {FirstName = "Tyler", LastName = "Jones"}
+            new UserViewModel {FirstName = "Tyler", LastName = "Jones"}
         };
         public IActionResult Index()
         {
@@ -22,8 +22,14 @@ namespace SecretSanta.Web.Controllers
             return View();
         }
 
+        public IActionResult Update(int id)
+        {
+            Users[id].Id = id;
+            return View(Users[id]);
+        }
+
         [HttpPost]
-        public IActionResult Create(User viewModel)
+        public IActionResult Create(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -33,5 +39,18 @@ namespace SecretSanta.Web.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        public IActionResult Update(UserViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Users[viewModel.Id] = viewModel;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+        }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Web.ViewModels
 {
-    public class Gift
+    public class GiftViewModel
     {
         [Required]
         public string Title;

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Web.ViewModels
 {
-    public class User
+    public class UserViewModel
     {
+        public int Id { get; set; }
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = "";
@@ -15,7 +16,7 @@ namespace SecretSanta.Web.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = "";
 
-        public List<Gift> Gifts;
+        public List<GiftViewModel> Gifts;
         
     }
 }
