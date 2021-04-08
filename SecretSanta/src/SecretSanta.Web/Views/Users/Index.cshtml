@@ -1,0 +1,13 @@
+﻿@model List<User>
+
+@{int counter = 0;}
+
+@foreach (var user in Model)
+{
+<section>
+    @user.FirstName @user.LastName
+    @{counter++;}
+</section>
+
+}
+<a asp-controller="Users" asp-action="Create">Create</a>
