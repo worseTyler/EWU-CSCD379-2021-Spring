@@ -30,10 +30,7 @@ namespace SecretSanta.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello from Web!");
-                });
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
