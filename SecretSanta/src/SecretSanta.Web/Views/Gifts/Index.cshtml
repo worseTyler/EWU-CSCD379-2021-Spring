@@ -1,0 +1,30 @@
+@model List<GroupViewModel>
+
+
+@{int counter = 0;}
+
+@foreach (var group in Model)
+{
+<section>
+    @group.GroupName
+    @{counter++;}
+    <p>Users:
+        <ul>
+            @foreach (var user in group.Users)
+                {
+                    <li>@user.FirstName</li>
+                    <ul>
+                        @foreach (var gift in user.Gifts)
+                        {
+                            <li>@gift.Title - @gift.Priority</li>
+                            <li>@gift.Description</li>
+                            <li><url>@gift.Url</url></li>
+                        }
+                    </ul>
+                }
+        </ul>
+        </p>
+</section>
+
+}
+<a asp-controller="Gifts" asp-action="Create">Create</a>

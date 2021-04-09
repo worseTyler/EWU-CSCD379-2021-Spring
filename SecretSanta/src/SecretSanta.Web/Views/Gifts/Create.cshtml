@@ -1,0 +1,27 @@
+@model GiftViewModel
+
+<form asp-controller="Gifts" asp-action="Create" method="post">
+    <div>
+        <label asp-for="Title"></label>: <input type="text" asp-for="Title" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="Description"></label>: <input type="text" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="Url"></label>: <input type="text" asp-for="Url" />
+        <span asp-validation-for="Url"></span>
+    </div>
+    <div>
+        <label asp-for="User"></label>: <input type="text" asp-for="User" />
+        <span asp-validation-for="User"></span>
+        This isn't linked to the user at all, change to drop down menu of all users
+    </div>
+    <div>
+        <label asp-for="Priority"></label>: <input type="text" asp-for="Priority" />
+        <span asp-validation-for="Priority"></span>
+        We shouldn't allow for items of multiple priority to exsits, we should just make it so that if they enter the same number it will just push everything else back by one prio
+    </div>
+    <button>Create</button>
+</form>
