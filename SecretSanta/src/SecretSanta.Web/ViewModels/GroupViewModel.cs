@@ -12,5 +12,7 @@ namespace SecretSanta.Web.ViewModels
         public string GroupName;
 
         public List<UserViewModel> Users;
+
+        int Id {get; set;}
     }
 }

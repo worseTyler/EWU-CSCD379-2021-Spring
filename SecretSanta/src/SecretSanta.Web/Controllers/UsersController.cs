@@ -32,19 +32,26 @@ namespace SecretSanta.Web.Controllers
             if (ModelState.IsValid)
             {
                 MockData.Users.Add(viewModel);
-                return RedirectToAction(nameof(Index));
+               
 
                 if (MockData.Groups
                        .Select(item => item.GroupName)
-                        .Contains(MockData.Users[viewModel.Id].GroupName))
+                        .Contains(viewModel.GroupName))
                 {
-                    // add user to group
+                    MockData.Groups.Select(item => item.GroupName).All(item => item == viewModel.GroupName)
                 }
                 else
                 {
-                    // make new group, add user to new group
+                    GroupViewModel groupViewModel = new GroupViewModel
+                    {
+                        GroupName = viewModel.GroupName,
+                        Users = new List<UserViewModel> { viewModel }
+                    };
+                    MockData.Groups.Add(groupViewModel);
                 }
+                 return RedirectToAction(nameof(Index));
             }
+            else
 
             return View(viewModel);
         }
@@ -57,7 +64,7 @@ namespace SecretSanta.Web.Controllers
 
                 if (MockData.Users[viewModel.Id].GroupName != viewModel.GroupName)
                 {
-                    int i = 0;
+                    MockData.Users[viewModel.Id].FirstName = "THIs is afsd fsjlk;tasej";
                 }
                 MockData.Users[viewModel.Id] = viewModel;
                 return RedirectToAction(nameof(Index));

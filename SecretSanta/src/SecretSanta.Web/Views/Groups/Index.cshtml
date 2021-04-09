@@ -1,1 +1,13 @@
-﻿<h1>A pain but in groups</h1>
+﻿@model List<GroupViewModel>
+
+@{int counter = 0;}
+
+@foreach (var group in Model)
+{
+<section>
+    @group.GroupName <a asp-controller="Groups" asp-action="Update" asp-route-id=@counter>Update</a>
+    @{counter++;}
+</section>
+
+}
+<a asp-controller="Group" asp-action="Create">Create</a>
