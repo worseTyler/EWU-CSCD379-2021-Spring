@@ -21,6 +21,8 @@ namespace SecretSanta.Web.ViewModels
         [Required]
         [Display(Name="Group")]
         public string GroupName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
         
     }
 }

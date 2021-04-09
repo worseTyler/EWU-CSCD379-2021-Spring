@@ -9,11 +9,17 @@
     @group.GroupName <a asp-controller="Groups" asp-action="Update" asp-route-id=@counter>Update</a>
     @{counter++;}
     <p>Users:
-    <ul>
-    @foreach (var user in group.Users)
-    {
-        <li>@user.FirstName</li>
-    }
+        <ul>
+            @foreach (var user in group.Users)
+                {
+                    <li>@user.FirstName</li>
+                    <ul>
+                        @foreach (var gift in user.Gifts)
+                        {
+                            <li>@gift.Title</li>
+                        }
+                    </ul>
+                }
         </ul>
         </p>
 </section>
