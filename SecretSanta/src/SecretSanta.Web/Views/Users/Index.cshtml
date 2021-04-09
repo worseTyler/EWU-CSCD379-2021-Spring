@@ -5,7 +5,7 @@
 @foreach (var user in Model)
 {
 <section>
-    @user.FirstName @user.LastName
+    @user.FirstName @user.LastName <a asp-controller="Users" asp-action="Update" asp-route-id=@counter>Edit</a>
     @{counter++;}
 </section>
 

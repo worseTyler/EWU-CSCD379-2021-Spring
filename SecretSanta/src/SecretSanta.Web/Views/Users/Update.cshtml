@@ -1,6 +1,6 @@
 ﻿@model UserViewModel
 
-<form asp-controller="Users" asp-action="Create" method="post">
+<form asp-controller="Users" asp-action="Update" method="post">
     <input type="hidden" asp-for="Id" />
     <div>
         <label asp-for="FirstName"></label>: <input type="text" asp-for="FirstName" />
@@ -9,6 +9,10 @@
     <div>
         <label asp-for="LastName"></label>: <input type="text" asp-for="LastName" />
         <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label asp-for="GroupName"></label>: <input type="text" asp-for="GroupName" />
+        <span asp-validation-for="GroupName"></span>
     </div>
     <button>Save</button>
 </form>
