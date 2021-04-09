@@ -32,13 +32,17 @@ namespace SecretSanta.Web.Controllers
             if (ModelState.IsValid)
             {
                 MockData.Users.Add(viewModel);
-               
+
 
                 if (MockData.Groups
                        .Select(item => item.GroupName)
                         .Contains(viewModel.GroupName))
                 {
-                    MockData.Groups.Select(item => item.GroupName).All(item => item == viewModel.GroupName)
+                    foreach (GroupViewModel group in MockData.Groups)
+                    {
+                        if (group.GroupName == viewModel.GroupName)
+                            group.Users.Add(viewModel);
+                    }
                 }
                 else
                 {
@@ -49,11 +53,11 @@ namespace SecretSanta.Web.Controllers
                     };
                     MockData.Groups.Add(groupViewModel);
                 }
-                 return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             else
 
-            return View(viewModel);
+                return View(viewModel);
         }
 
         [HttpPost]
