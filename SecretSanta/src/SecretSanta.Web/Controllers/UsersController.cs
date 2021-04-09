@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SecretSanta.Web.Data;
 using SecretSanta.Web.ViewModels;
 
 namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        static List<UserViewModel> Users = new List<UserViewModel>
-        {
-            new UserViewModel {FirstName = "Tyler", LastName = "Jones"}
-        };
+
         public IActionResult Index()
         {
-            return View(Users);
+            return View(MockData.Users);
         }
         public IActionResult Create()
         {
@@ -24,8 +22,8 @@ namespace SecretSanta.Web.Controllers
 
         public IActionResult Update(int id)
         {
-            Users[id].Id = id;
-            return View(Users[id]);
+            MockData.Users[id].Id = id;
+            return View(MockData.Users[id]);
         }
 
         [HttpPost]
@@ -33,8 +31,19 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Users.Add(viewModel);
+                MockData.Users.Add(viewModel);
                 return RedirectToAction(nameof(Index));
+
+                if (MockData.Groups
+                       .Select(item => item.GroupName)
+                        .Contains(MockData.Users[viewModel.Id].GroupName))
+                {
+                    // add user to group
+                }
+                else
+                {
+                    // make new group, add user to new group
+                }
             }
 
             return View(viewModel);
@@ -45,8 +54,24 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Users[viewModel.Id] = viewModel;
+
+                if (MockData.Users[viewModel.Id].GroupName != viewModel.GroupName)
+                {
+                    int i = 0;
+                }
+                MockData.Users[viewModel.Id] = viewModel;
                 return RedirectToAction(nameof(Index));
+
+                if (MockData.Groups
+                    .Select(item => item.GroupName)
+                    .Contains(MockData.Users[viewModel.Id].GroupName))
+                {
+                    // add user to group
+                }
+                else
+                {
+                    // make new group, add user to new group
+                }
             }
 
             return View(viewModel);
