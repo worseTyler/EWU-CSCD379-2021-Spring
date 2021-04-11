@@ -18,11 +18,10 @@ namespace SecretSanta.Web.ViewModels
 
         public List<GiftViewModel> Gifts;
 
-        [Required]
-        [Display(Name="Group")]
+        [Display(Name = "Group")]
         public string GroupName { get; set; }
 
         public string FullName => $"{FirstName} {LastName}";
-        
+
     }
 }

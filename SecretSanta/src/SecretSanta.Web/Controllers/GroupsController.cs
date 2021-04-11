@@ -14,5 +14,43 @@ namespace SecretSanta.Web.Controllers
         {
             return View(MockData.Groups);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Create(GroupViewModel viewModel){
+            if(ModelState.IsValid){
+                MockData.Groups.Add(viewModel);
+                return RedirectToAction(nameof(Index));
+            }else{
+                return View(viewModel);
+            }
+        }
+
+        public IActionResult Update(int id)
+        {
+            MockData.Groups[id].Id = id;
+            return View(MockData.Groups[id]);
+        }
+        
+        [HttpPost]
+        public IActionResult Update(GroupViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                MockData.Groups[viewModel.Id] = viewModel;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+        }
+
+        public IActionResult Delete(int id){
+            MockData.Groups.RemoveAt(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

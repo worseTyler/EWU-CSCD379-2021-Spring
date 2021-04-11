@@ -55,8 +55,6 @@ namespace SecretSanta.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            else
-
                 return View(viewModel);
         }
 

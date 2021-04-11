@@ -20,8 +20,8 @@ namespace SecretSanta.Web.Data
         };
         public static List<UserViewModel> Users = new List<UserViewModel>
         {
-            new UserViewModel {FirstName = "Tyler", LastName = "Jones", GroupName = "Super Duper Cool Group", Id = 0, Gifts = GiftsDictionary["Tyler Jones"]},
-            new UserViewModel {FirstName = "Mia", LastName = "Hunt", GroupName = "Super Duper Cool Group", Id = 1, Gifts = GiftsDictionary["Mia Hunt"]}
+            new UserViewModel {FirstName = "Tyler", LastName = "Jones", GroupName = "Super Duper Omega Astro Cool Giga Stomping Group", Id = 0, Gifts = GiftsDictionary["Tyler Jones"]},
+            new UserViewModel {FirstName = "Mia", LastName = "Hunt", GroupName = "Super Duper Omega Astro Cool Giga Stomping Group", Id = 1, Gifts = GiftsDictionary["Mia Hunt"]}
         };
 
         public static List<GroupViewModel> Groups = new List<GroupViewModel>

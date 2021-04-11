@@ -9,15 +9,17 @@ namespace SecretSanta.Web.ViewModels
     public class GiftViewModel
     {
         [Required]
-        public string Title;
+        public string Title {get; set;} = "";
         [Required]
-        public string Description;
+        public string Description {get; set;} = "";
         [Required]
         [Url]
-        public string Url;
+        public string Url {get; set;} = "";
         [Required]
-        public int Priority;
-        [Required]
-        public string User;
+        public int Priority {get; set;}
+        public string User {get; set;}
+        [Display(Name = "User")]
+        public int UserId {get; set;}
+        public int Id {get; set;}
     }
 }

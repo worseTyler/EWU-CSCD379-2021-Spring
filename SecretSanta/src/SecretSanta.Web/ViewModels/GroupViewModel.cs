@@ -8,11 +8,12 @@ namespace SecretSanta.Web.ViewModels
 {
     public class GroupViewModel
     {
+        [Display(Name = "Group Name")]
         [Required]
-        public string GroupName;
+        public string GroupName {get; set;} = "";
 
         public List<UserViewModel> Users;
 
-        int Id {get; set;}
+        public int Id {get; set;}
     }
 }
