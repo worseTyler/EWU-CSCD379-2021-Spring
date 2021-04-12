@@ -15,5 +15,6 @@ namespace SecretSanta.Web.ViewModels
         public List<UserViewModel> Users;
 
         public int Id {get; set;}
+
     }
 }

@@ -1,6 +1,8 @@
 @model GiftViewModel
 
 <form asp-controller="Gifts" asp-action="Update" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Id" />
     <div>
         <label asp-for="Title"></label>: <input type="text" asp-for="Title" />
         <span asp-validation-for="Title"></span>
@@ -12,12 +14,6 @@
     <div>
         <label asp-for="Url"></label>: <input type="text" asp-for="Url" />
         <span asp-validation-for="Url"></span>
-    </div>
-    <div>
-        <label asp-for="UserId"></label>
-        <select asp-for="UserId" asp-items="@(new SelectList(SecretSanta.Web.Data.MockData.Users, "Id", "FullName"))">
-            <option>Please select one</option>
-        </select>
     </div>
     <div>
         <label asp-for="Priority"></label>: <input type="text" asp-for="Priority" />

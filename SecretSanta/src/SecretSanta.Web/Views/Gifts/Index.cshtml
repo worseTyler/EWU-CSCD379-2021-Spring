@@ -1,28 +1,37 @@
 @model List<UserViewModel>
 
 
-@{int counter = 0;}
+@{int userCounter = 0;}
+@{int giftCounter = 0;}
 
 <section>
-    @{counter++;}
+
     <p>Users:
         <ul>
             @foreach (var user in Model)
                 {
+                    
                     <li>@user.FullName</li><br>
-                    @if(user.Gifts != null){
+                    
                      <ul>
                         @foreach (var gift in user.Gifts)
                         {
-                            <li>@gift.Title - @gift.Priority <a asp-controller="Gift" asp-action="Update" asp-route-userId=@user.Id asp-route-id=@counter>Update</a> <a asp-controller="Gift" asp-action="Delete" asp-route-userId=@user.Id asp-route-itemid=@counter>Delete</a></li>
+                            @if(user.Gifts.Count > 0){
+
+                            <li>@gift.Title - @gift.Priority <a asp-controller="Gifts" asp-action="Update" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Update</a> <a a asp-controller="Gifts" asp-action="Delete" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Delete</a></li>
                             <ul>
                                 <li>@gift.Description</li>
                                 <li><url>@gift.Url</url></li>
                             </ul>
                             <br>
+        
+                            }
+                            giftCounter++;
                         }
+                        @(giftCounter = 0);
+
                     </ul> 
-                    }
+                    userCounter++;
                 }
         </ul>
         </p>

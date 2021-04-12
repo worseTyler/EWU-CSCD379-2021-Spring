@@ -23,12 +23,15 @@ namespace SecretSanta.Web.Controllers
         public IActionResult Update(int id)
         {
             MockData.Users[id].Id = id;
-            if(MockData.Groups.Count() == 1){
+            if (MockData.Groups.Count() == 1)
+            {
                 MockData.Groups.RemoveAll(item => item.Users.Select(item => item.GroupName).ToString() == MockData.Users[id].GroupName);
-            }else{
+            }
+            else
+            {
                 MockData.Groups.RemoveAll(item => item.Users.All(item => item == MockData.Users[id]));
             }
-            
+
             return View(MockData.Users[id]);
         }
 
@@ -37,8 +40,9 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                viewModel.Id = (MockData.Users.Select(item => item.Id).Last() + 1);
                 MockData.Users.Add(viewModel);
-
+                System.Console.WriteLine(MockData.Users.Count());
 
                 if (MockData.Groups
                        .Select(item => item.GroupName)
@@ -102,12 +106,21 @@ namespace SecretSanta.Web.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Delete(int id){
+        public IActionResult Delete(int id)
+        {
             foreach (GroupViewModel group in MockData.Groups)
             {
                 group.Users.RemoveAll(item => item.Id == id);
             }
+
             MockData.Users.RemoveAt(id);
+            for (int i = 0; i < MockData.Users.Count; i++)
+            {
+                for (int j = 0; i < MockData.Users[i].Gifts.Count; i++)
+                {
+                    MockData.Users[i].Gifts[j].Id = i;
+                }
+            }
             return RedirectToAction(nameof(Index));
         }
     }

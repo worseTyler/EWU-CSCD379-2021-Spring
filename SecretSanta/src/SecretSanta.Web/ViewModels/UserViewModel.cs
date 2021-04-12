@@ -16,7 +16,7 @@ namespace SecretSanta.Web.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = "";
 
-        public List<GiftViewModel> Gifts;
+        public List<GiftViewModel> Gifts = new List<GiftViewModel> {};
 
         [Display(Name = "Group")]
         public string GroupName { get; set; }

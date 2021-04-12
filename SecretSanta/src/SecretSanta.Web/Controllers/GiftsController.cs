@@ -19,13 +19,19 @@ namespace SecretSanta.Web.Controllers
         {
             return View();
         }
-        
+
+        public IActionResult Update(int userId, int giftId)
+        {
+            return View(MockData.Users[userId].Gifts[giftId]);
+        }
+
         [HttpPost]
         public IActionResult Create(GiftViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.GiftsDictionary[viewModel.UserId].Add(viewModel);
+                viewModel.Id = MockData.Users[viewModel.UserId].Gifts.Count();
+                MockData.Users[viewModel.UserId].Gifts.Add(viewModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -35,18 +41,29 @@ namespace SecretSanta.Web.Controllers
         [HttpPost]
         public IActionResult Update(GiftViewModel viewModel)
         {
+
             if (ModelState.IsValid)
             {
-                MockData.GiftsDictionary[viewModel.UserId][viewModel.Id] = viewModel;
+                foreach(UserViewModel user in MockData.Users){
+                    System.Console.WriteLine(viewModel.Id);
+                    System.Console.WriteLine($"{user.Gifts[viewModel.Id].Title} - {viewModel.Title}");
+                    if(user.Gifts.Count > viewModel.Id && user.Id == viewModel.UserId){
+                        user.Gifts[viewModel.Id] = viewModel;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);
         }
 
-        [HttpPost]
-        public IActionResult Delete(int userId, int id){
-            MockData.GiftsDictionary[userId].RemoveAt(id);
+        public IActionResult Delete(int userId, int giftId)
+        {
+
+            MockData.Users[userId].Gifts.RemoveAll(item => item.Id == giftId);
+            for(int i = 0; i < MockData.Users[userId].Gifts.Count(); i++){
+                 MockData.Users[userId].Gifts[i].Id = i;
+            }
             return RedirectToAction(nameof(Index));
         }
     }

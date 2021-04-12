@@ -10,7 +10,9 @@
     <ul>
         @foreach (var user in group.Users)
         {
+            @if(user == null){
             <li>@user.FullName</li>
+            }
         }
     </ul>
     @{counter++;}

@@ -41,7 +41,7 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MockData.Groups[viewModel.Id] = viewModel;
+                MockData.Groups[viewModel.Id].GroupName = viewModel.GroupName;
                 return RedirectToAction(nameof(Index));
             }
 
