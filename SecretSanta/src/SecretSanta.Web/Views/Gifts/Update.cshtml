@@ -1,6 +1,6 @@
 @model GiftViewModel
 
-<form asp-controller="Gifts" asp-action="Create" method="post">
+<form asp-controller="Gifts" asp-action="Update" method="post">
     <div>
         <label asp-for="Title"></label>: <input type="text" asp-for="Title" />
         <span asp-validation-for="Title"></span>
@@ -23,5 +23,5 @@
         <label asp-for="Priority"></label>: <input type="text" asp-for="Priority" />
         <span asp-validation-for="Priority"></span>
     </div>
-    <button>Create</button>
+    <button>Save</button>
 </form>
