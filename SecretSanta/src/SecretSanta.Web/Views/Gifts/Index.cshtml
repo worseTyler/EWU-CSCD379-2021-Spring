@@ -14,12 +14,12 @@
                      <ul>
                         @foreach (var gift in user.Gifts)
                         {
-                                <li>@gift.Title - @gift.Priority <a asp-controller="Gift" asp-action="Update" asp-route-user=@user.FullName asp-route-id=@counter>Update</a> <a asp-controller="Gift" asp-action="Delete" asp-route-user=@user.FullName asp-route-itemid=@counter>Delete</a></li>
-                                <ul>
-                                    <li>@gift.Description</li>
-                                    <li><url>@gift.Url</url></li>
-                                </ul>
-                                <br>
+                            <li>@gift.Title - @gift.Priority <a asp-controller="Gift" asp-action="Update" asp-route-userId=@user.Id asp-route-id=@counter>Update</a> <a asp-controller="Gift" asp-action="Delete" asp-route-userId=@user.Id asp-route-itemid=@counter>Delete</a></li>
+                            <ul>
+                                <li>@gift.Description</li>
+                                <li><url>@gift.Url</url></li>
+                            </ul>
+                            <br>
                         }
                     </ul> 
                     }

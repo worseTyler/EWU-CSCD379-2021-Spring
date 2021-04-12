@@ -25,7 +25,7 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MockData.GiftsDictionary[viewModel.User].Add(viewModel);
+                MockData.GiftsDictionary[viewModel.UserId].Add(viewModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -33,15 +33,20 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(string user, int id)
+        public IActionResult Update(GiftViewModel viewModel)
         {
-            MockData.GiftsDictionary[user][id].Id = id;
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                MockData.GiftsDictionary[viewModel.UserId][viewModel.Id] = viewModel;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Delete(string user, int id){
-            MockData.GiftsDictionary[user].RemoveAt(id);
+        public IActionResult Delete(int userId, int id){
+            MockData.GiftsDictionary[userId].RemoveAt(id);
             return RedirectToAction(nameof(Index));
         }
     }

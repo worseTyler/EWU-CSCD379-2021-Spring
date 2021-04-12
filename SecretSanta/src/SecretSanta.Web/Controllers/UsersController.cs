@@ -74,7 +74,7 @@ namespace SecretSanta.Web.Controllers
 
                 if (MockData.Groups
                     .Select(item => item.GroupName)
-                    .Contains(MockData.Users[viewModel.Id].GroupName))
+                    .Equals(MockData.Users[viewModel.Id].GroupName))
                 {
                     foreach (GroupViewModel group in MockData.Groups)
                     {
@@ -102,5 +102,13 @@ namespace SecretSanta.Web.Controllers
             return View(viewModel);
         }
 
+        public IActionResult Delete(int id){
+            foreach (GroupViewModel group in MockData.Groups)
+            {
+                group.Users.RemoveAll(item => item.Id == id);
+            }
+            MockData.Users.RemoveAt(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
