@@ -10,14 +10,17 @@
             @foreach (var user in Model)
                 {
                     <li>@user.FirstName</li>
-                    @* <ul>
+                    @if(user.Gifts != null){
+                     <ul>
                         @foreach (var gift in user.Gifts)
                         {
                             <li>@gift.Title - @gift.Priority</li>
                             <li>@gift.Description</li>
                             <li><url>@gift.Url</url></li>
+                            <li></li>
                         }
-                    </ul> *@
+                    </ul> 
+                    }
                 }
         </ul>
         </p>

@@ -23,6 +23,12 @@ namespace SecretSanta.Web.Controllers
         public IActionResult Update(int id)
         {
             MockData.Users[id].Id = id;
+            if(MockData.Groups.Count() == 1){
+                MockData.Groups.RemoveAll(item => item.Users.Select(item => item.GroupName).ToString() == MockData.Users[id].GroupName);
+            }else{
+                MockData.Groups.RemoveAll(item => item.Users.All(item => item == MockData.Users[id]));
+            }
+            
             return View(MockData.Users[id]);
         }
 
@@ -55,7 +61,7 @@ namespace SecretSanta.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-                return View(viewModel);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -63,24 +69,34 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                if (MockData.Users[viewModel.Id].GroupName != viewModel.GroupName)
-                {
-                    MockData.Users[viewModel.Id].FirstName = "THIs is afsd fsjlk;tasej";
-                }
                 MockData.Users[viewModel.Id] = viewModel;
-                return RedirectToAction(nameof(Index));
+
 
                 if (MockData.Groups
                     .Select(item => item.GroupName)
                     .Contains(MockData.Users[viewModel.Id].GroupName))
                 {
-                    // add user to group
+                    foreach (GroupViewModel group in MockData.Groups)
+                    {
+                        if (group.GroupName == viewModel.GroupName)
+                            group.Users.Add(viewModel);
+                    }
                 }
                 else
                 {
-                    // make new group, add user to new group
+                    foreach (GroupViewModel group in MockData.Groups)
+                    {
+                        if (group.GroupName == viewModel.GroupName)
+                            group.Users.Remove(viewModel);
+                    }
+                    GroupViewModel groupViewModel = new GroupViewModel
+                    {
+                        GroupName = viewModel.GroupName,
+                        Users = new List<UserViewModel> { viewModel }
+                    };
+                    MockData.Groups.Add(groupViewModel);
                 }
+                return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);
