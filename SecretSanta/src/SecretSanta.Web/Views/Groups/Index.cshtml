@@ -6,7 +6,7 @@
 @foreach (var group in Model)
 {
 <section>
-    @group.GroupName <a asp-controller="Groups" asp-action="Update" asp-route-id=@counter>Update</a> <a asp-controller="Groups" asp-action="Delete" asp-route-itemid=@counter>Delete</a>
+    @group.GroupName <a asp-controller="Groups" asp-action="Update" asp-route-id=@counter>Update</a> <a asp-controller="Groups" asp-action="Delete" asp-route-id=@counter>Delete</a>
     <ul>
         @if(group.Users != null){
             @foreach (var user in group.Users)

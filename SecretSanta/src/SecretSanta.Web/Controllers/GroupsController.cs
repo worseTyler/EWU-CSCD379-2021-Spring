@@ -49,13 +49,6 @@ namespace SecretSanta.Web.Controllers
         }
 
         public IActionResult Delete(int id){
-            foreach (UserViewModel user in MockData.Users)
-            {
-                if (user.GroupName == MockData.Groups[id].GroupName)
-                {
-                    user.GroupName = "";
-                }
-            }
             MockData.Groups.RemoveAt(id);
             return RedirectToAction(nameof(Index));
         }
