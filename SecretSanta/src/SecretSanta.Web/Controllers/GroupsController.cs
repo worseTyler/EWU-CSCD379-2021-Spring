@@ -41,14 +41,27 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                foreach (UserViewModel user in MockData.Users)
+                {
+                    if (user.GroupName == MockData.Groups[viewModel.Id].GroupName)
+                    {
+                        user.GroupName = viewModel.GroupName;
+                    }
+                }
                 MockData.Groups[viewModel.Id].GroupName = viewModel.GroupName;
                 return RedirectToAction(nameof(Index));
             }
-
             return View(viewModel);
         }
 
         public IActionResult Delete(int id){
+            foreach (UserViewModel user in MockData.Users)
+            {
+                if (user.GroupName == MockData.Groups[id].GroupName)
+                {
+                    user.GroupName = "Unamed Group";
+                }
+            }
             MockData.Groups.RemoveAt(id);
             return RedirectToAction(nameof(Index));
         }

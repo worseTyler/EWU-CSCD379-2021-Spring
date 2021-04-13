@@ -79,8 +79,14 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MockData.Users[viewModel.Id] = viewModel;
-
+                foreach (GroupViewModel group in MockData.Groups)
+                {
+                    if (group.GroupName == MockData.Users[viewModel.Id].GroupName)
+                    {
+                        group.Users.Remove(MockData.Users[viewModel.Id]);
+                        break;
+                    }
+                }
 
                 if (MockData.Groups
                     .Select(item => item.GroupName)
@@ -89,6 +95,7 @@ namespace SecretSanta.Web.Controllers
                     foreach (GroupViewModel group in MockData.Groups)
                     {
                         if (group.GroupName == viewModel.GroupName)
+                        {
                             if (group.Users == null)
                             {
                                 group.Users = new List<UserViewModel>{
@@ -99,16 +106,11 @@ namespace SecretSanta.Web.Controllers
                             {
                                 group.Users.Add(viewModel);
                             }
-
+                        }
                     }
                 }
                 else
                 {
-                    foreach (GroupViewModel group in MockData.Groups)
-                    {
-                        if (group.GroupName == viewModel.GroupName)
-                            group.Users.Remove(viewModel);
-                    }
                     GroupViewModel groupViewModel = new GroupViewModel
                     {
                         GroupName = viewModel.GroupName,
@@ -116,6 +118,8 @@ namespace SecretSanta.Web.Controllers
                     };
                     MockData.Groups.Add(groupViewModel);
                 }
+                viewModel.Gifts = MockData.Users[viewModel.Id].Gifts;
+                MockData.Users[viewModel.Id] = viewModel;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -126,7 +130,7 @@ namespace SecretSanta.Web.Controllers
         {
             foreach (GroupViewModel group in MockData.Groups)
             {
-                group.Users.RemoveAll(item => item.Id == id);
+                group.Users.Remove(MockData.Users[id]);
             }
 
             MockData.Users.RemoveAt(id);

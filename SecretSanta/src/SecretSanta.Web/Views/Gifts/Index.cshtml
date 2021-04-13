@@ -4,27 +4,32 @@
     <p>Users:
         <ul>
             @foreach (var user in Model)
+            {
+                <li>@user.FullName</li><br>
+                if (user.Gifts is null || user.Gifts.Count <= 0)
                 {
-                    
-                    <li>@user.FullName</li><br>
-                    
                      <ul>
-                        @foreach (var gift in user.Gifts)
-                        {
-                            @if(user.Gifts.Count > 0){
+                        <li>No gifts added</li><br>
+                    </ul>
+                } 
+                else
+                {
+                 <ul>
+                    @foreach (var gift in user.Gifts)
+                    {
+                        @if(user.Gifts.Count > 0){
 
-                            <li>@gift.Title - @gift.Priority <a asp-controller="Gifts" asp-action="Update" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Update</a> <a a asp-controller="Gifts" asp-action="Delete" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Delete</a></li>
-                            <ul>
-                                <li>@gift.Description</li>
-                                <li><url>@gift.Url</url></li>
-                            </ul>
-                            <br>
-        
-                            }
+                        <li>@gift.Title - @gift.Priority <a asp-controller="Gifts" asp-action="Update" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Update</a> <a a asp-controller="Gifts" asp-action="Delete" asp-route-userId=@(user.Id) asp-route-giftId=@(gift.Id)>Delete</a></li>
+                        <ul>
+                            <li>@gift.Description</li>
+                            <li><url><a href=@gift.Url>Buy online</a></url></li>
+                        </ul>
+                        <br>
                         }
-
-                    </ul> 
+                    }
+                </ul>  
                 }
+            }
         </ul>
         </p>
 </section>
