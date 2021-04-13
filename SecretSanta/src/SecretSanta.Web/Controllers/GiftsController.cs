@@ -44,13 +44,7 @@ namespace SecretSanta.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                foreach(UserViewModel user in MockData.Users){
-                    System.Console.WriteLine(viewModel.Id);
-                    System.Console.WriteLine($"{user.Gifts[viewModel.Id].Title} - {viewModel.Title}");
-                    if(user.Gifts.Count > viewModel.Id && user.Id == viewModel.UserId){
-                        user.Gifts[viewModel.Id] = viewModel;
-                    }
-                }
+                MockData.Users[viewModel.UserId].Gifts[viewModel.Id] = viewModel;
                 return RedirectToAction(nameof(Index));
             }
 

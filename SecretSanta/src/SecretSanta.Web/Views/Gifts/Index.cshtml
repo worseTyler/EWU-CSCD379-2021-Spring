@@ -1,9 +1,4 @@
 @model List<UserViewModel>
-
-
-@{int userCounter = 0;}
-@{int giftCounter = 0;}
-
 <section>
 
     <p>Users:
@@ -26,12 +21,9 @@
                             <br>
         
                             }
-                            giftCounter++;
                         }
-                        @(giftCounter = 0);
 
                     </ul> 
-                    userCounter++;
                 }
         </ul>
         </p>

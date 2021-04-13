@@ -8,12 +8,13 @@
 <section>
     @group.GroupName <a asp-controller="Groups" asp-action="Update" asp-route-id=@counter>Update</a> <a asp-controller="Groups" asp-action="Delete" asp-route-itemid=@counter>Delete</a>
     <ul>
-        @foreach (var user in group.Users)
-        {
-            @if(user == null){
-            <li>@user.FullName</li>
+        @if(group.Users != null){
+            @foreach (var user in group.Users)
+            {
+                <li>@user.FullName</li>
             }
         }
+
     </ul>
     @{counter++;}
 </section>

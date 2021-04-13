@@ -40,9 +40,15 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                viewModel.Id = (MockData.Users.Select(item => item.Id).Last() + 1);
+                if (MockData.Users.Count() > 0)
+                {
+                    viewModel.Id = (MockData.Users.Select(item => item.Id).Last() + 1);
+                }
+                else
+                {
+                    viewModel.Id = 0;
+                }
                 MockData.Users.Add(viewModel);
-                System.Console.WriteLine(MockData.Users.Count());
 
                 if (MockData.Groups
                        .Select(item => item.GroupName)
@@ -83,7 +89,17 @@ namespace SecretSanta.Web.Controllers
                     foreach (GroupViewModel group in MockData.Groups)
                     {
                         if (group.GroupName == viewModel.GroupName)
-                            group.Users.Add(viewModel);
+                            if (group.Users == null)
+                            {
+                                group.Users = new List<UserViewModel>{
+                                    viewModel
+                                };
+                            }
+                            else
+                            {
+                                group.Users.Add(viewModel);
+                            }
+
                     }
                 }
                 else
@@ -116,9 +132,9 @@ namespace SecretSanta.Web.Controllers
             MockData.Users.RemoveAt(id);
             for (int i = 0; i < MockData.Users.Count; i++)
             {
-                for (int j = 0; i < MockData.Users[i].Gifts.Count; i++)
+                foreach (GiftViewModel gift in MockData.Users[i].Gifts)
                 {
-                    MockData.Users[i].Gifts[j].Id = i;
+                    gift.UserId = i;
                 }
             }
             return RedirectToAction(nameof(Index));
