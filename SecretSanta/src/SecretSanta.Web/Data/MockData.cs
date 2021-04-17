@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SecretSanta.Web.ViewModels;
 
 namespace SecretSanta.Web.Data

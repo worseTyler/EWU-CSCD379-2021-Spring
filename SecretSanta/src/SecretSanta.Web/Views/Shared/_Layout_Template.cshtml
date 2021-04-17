@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>UserGroup - @ViewBag.Title</title>
+    <title>SecretSanta - @ViewBag.Title</title>
     <!-- Stylesheets -->
     <% for (var filename in htmlWebpackPlugin.files.css) { %>
     <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet" />
@@ -10,19 +10,36 @@
     <!-- End Stylesheets -->
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
-    </nav>
+    <header class="bg-green-400 text-white flex flex-col sm:flex-row justify-between p-6">
+        <div class="flex flex-row justify-between text-3xl">
+            <a asp-controller="Home" asp-action="Index">Secret Santa</a></li>
+            <button class="sm:hidden" onclick="toggleMenu()"><i class="fas fa-bars align-middle h-full"></i></button>
+        </div>
+        <nav id="headerNav" class="hidden sm:inline-block sm:text-2xl">
+            <ul class="flex flex-col sm:flex-row">
+                <li class="sm:px-10"><a asp-controller="Users" asp-action="Index">Users</a></li>
+                <li class="sm:px-10"><a asp-controller="Groups" asp-action="Index">Groups</a></li>
+                <li class="sm:px-10"><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
+            </ul>
+        </nav>
+    </header>
     @RenderBody()
 
     <!-- Scripts -->
     <% for (var index in htmlWebpackPlugin.files.js) { %>
     <script src="~<%= htmlWebpackPlugin.files.js[index] %>"></script>
+    <script>
+        function toggleMenu() {
+            var headerNav = document.getElementById("headerNav");
+            if (headerNav) {
+                if (headerNav.classList.contains("hidden")) {
+                    headerNav.classList.remove("hidden");
+                } else {
+                    headerNav.classList.add("hidden");
+                }
+            }
+        }
+    </script>
     <% } %>
     <!-- End Scripts -->
 </body>

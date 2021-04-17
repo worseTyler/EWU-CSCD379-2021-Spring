@@ -1,7 +1,6 @@
 {
   "name": "secretsanta.web",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "build:dev": "webpack --mode development --watch",
     "build:prod": "export NODE_ENV=production && webpack --mode production"
@@ -38,5 +37,7 @@
     "typescript": "4.2.4",
     "webpack": "5.32.0",
     "webpack-cli": "4.6.0"
-  }
+  },
+  "main": "postcss.config.js",
+  "description": ""
 }
