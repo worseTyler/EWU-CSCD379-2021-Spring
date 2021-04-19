@@ -10,16 +10,16 @@
     <!-- End Stylesheets -->
 </head>
 <body>
-    <header class="bg-green-400 text-white flex flex-col sm:flex-row justify-between p-6">
-        <div class="flex flex-row justify-between text-3xl">
+    <header class="bg-green-500 text-gray-200 font-semibold flex flex-col sm:flex-row justify-between p-6">
+        <div class="flex flex-row justify-between text-3xl hover:text-red-300 focus:text-white">
             <a asp-controller="Home" asp-action="Index">Secret Santa</a></li>
             <button class="sm:hidden" onclick="toggleMenu()"><i class="fas fa-bars align-middle h-full"></i></button>
         </div>
         <nav id="headerNav" class="hidden sm:inline-block sm:text-2xl">
             <ul class="flex flex-col sm:flex-row">
-                <li class="sm:px-10"><a asp-controller="Users" asp-action="Index">Users</a></li>
-                <li class="sm:px-10"><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-                <li class="sm:px-10"><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
+                <li class="sm:px-10 text-gray-200 hover:text-white focus:text-white"><a asp-controller="Users" asp-action="Index">Users</a></li>
+                <li class="sm:px-10 text-gray-200 hover:text-white focus:text-white"><a asp-controller="Groups" asp-action="Index">Groups</a></li>
+                <li class="sm:px-10 text-gray-200 hover:text-white focus:text-white"><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
             </ul>
         </nav>
     </header>

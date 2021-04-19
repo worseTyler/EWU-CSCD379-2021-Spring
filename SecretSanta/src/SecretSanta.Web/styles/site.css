@@ -3,21 +3,50 @@
 @tailwind utilities;
 
 @layer components {
-    .btn {
-        @apply border border-green-800 text-white;
-        @apply rounded-xl py-2 px-4 bg-green-400 hover:bg-green-600;
+
+    section {
+        @apply m-6;
+    }
+    
+   /* form {
+        @apply m-6;
+    }
+*/
+    form {
+        @apply m-6;
+    }
+    label {
+        @apply text-gray-600 text-xl font-semibold;
     }
 
     input {
-        @apply border border-indigo-300 rounded-md w-full;
+        @apply border border-gray-300 text-gray-600 my-4 p-2 rounded-md w-full hover:border-green-500 focus:outline-none font-semibold;
     }
+
+    select {
+        @apply border border-gray-300 mx-6 p-2 rounded-md my-4 text-gray-600 hover:border-green-500 focus:outline-none font-semibold;
+    } 
+
+    option {
+        @apply border border-gray-300 rounded-md text-gray-600 hover:border-green-500 focus:outline-none focus:bg-green-500 font-semibold;
+    }
+    
+    .btn {
+        @apply border border-green-500 text-white;
+        @apply rounded-xl m-6 py-2 px-4 bg-green-500 hover:bg-green-700 hover:border-green-700;
+    }
+    
+    .fa-trash-btn {
+        @apply text-gray-600 hover:text-red-500 focus:text-red-500;
+    }
+
 }
 
 @layer utilities {
     .input-validation-error {
         @apply border-red-400 focus:border-red-800;
     }
-}
-.grid-right {
+    .grid-right {
       grid-area: right;
     }
+}
