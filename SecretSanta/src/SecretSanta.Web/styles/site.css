@@ -8,13 +8,10 @@
         @apply m-6;
     }
     
-   /* form {
-        @apply m-6;
-    }
-*/
     form {
         @apply m-6;
     }
+
     label {
         @apply text-gray-600 text-xl font-semibold;
     }
@@ -37,7 +34,7 @@
     }
     
     .fa-trash-btn {
-        @apply text-gray-600 hover:text-red-500 focus:text-red-500;
+        @apply justify-self-end text-gray-600 hover:text-red-500 focus:text-red-500;
     }
 
 }
