@@ -19,5 +19,8 @@ For this assignment we are only going to handle users. The intent is to learn ab
   - Ensure test class is named appropriately for the class being tested: ✔❌
   - Name all tests in the form `<MethodBeingTested>_<ConditionBeingTested>_<ExpectedOutcome>()`. You can add  `<NoWarn>CA1707;INTL0003</NoWarn>` to remove the naming warnings. ✔❌
 - Create a Unit Test project for the SecretSanta.Api project. ✔❌
-  - Test all controller public methods. ✔❌
+  - Test all controller public methods. It is up to you to determine the best way to provide the controller's dependencies. ✔❌
   - Ensure the project is named with a ".Tests" suffix ✔❌
+
+Extra Credit:
+- Use a test double library like [Moq](https://www.nuget.org/packages/Moq) to provide the controller's dependencies.
