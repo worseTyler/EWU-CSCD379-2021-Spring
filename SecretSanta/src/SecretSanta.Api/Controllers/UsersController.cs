@@ -29,24 +29,26 @@ namespace SecretSanta.Api.Controllers
 
         //DELETE /api/users/<index>
         [HttpDelete("{index}")]
-        public void Delete(int index)
+        public ActionResult Delete(int index)
         {
             if(!UserRepository.Remove(index))
            {
-               System.Console.WriteLine("There was nothing at this index");
+               return NoContent();
            }
+           return Ok();
         }
 
         // POST /api/users
-        public void Post([FromBody] string userName)
+        [HttpPost]
+        public void Post([FromBody] User user)
         {
-            var names = userName.Split(" ");
-            User user = new () {
-                FirstName = names[0],
-                LastName = names[1],
-                Id = UserRepository.List().Select(item => item.Id).Max()
-            };
             UserRepository.Create(user);
+        }
+
+        [HttpPut("{index}")]
+        public void Put (int index,[FromBody] User user){
+            user.Id = index;
+            UserRepository.Save(user);
         }
     }
 }
