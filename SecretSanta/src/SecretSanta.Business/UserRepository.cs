@@ -27,7 +27,7 @@ namespace SecretSanta.Business
             UserList.Users.Add(item);
             return item;
         }
-        public void Save(User item)
+        public void Update(User item)
         {
             UserList.Users[item.Id] = item;
         }

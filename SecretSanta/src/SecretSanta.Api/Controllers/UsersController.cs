@@ -31,7 +31,7 @@ namespace SecretSanta.Api.Controllers
         [HttpDelete("{index}")]
         public ActionResult Delete(int index)
         {
-            if(!UserRepository.Remove(index))
+           if (!UserRepository.Remove(index))
            {
                return NoContent();
            }
@@ -48,7 +48,7 @@ namespace SecretSanta.Api.Controllers
         [HttpPut("{index}")]
         public void Put (int index,[FromBody] User user){
             user.Id = index;
-            UserRepository.Save(user);
+            UserRepository.Update(user);
         }
     }
 }

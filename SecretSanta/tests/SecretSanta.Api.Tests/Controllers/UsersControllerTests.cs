@@ -91,7 +91,7 @@ namespace SecretSanta.Api.Tests
         }
 
         [TestMethod]
-        public void Put_GivenParams_SaveIsCalled()
+        public void Put_GivenParams_UpdateIsCalled()
         {
             User paramUser = new()
             {
@@ -100,12 +100,12 @@ namespace SecretSanta.Api.Tests
                 Id = 0
             };
             Mock<IUserRepository> mock = new();
-            mock.Setup(item => item.Save(paramUser));
+            mock.Setup(item => item.Update(paramUser));
 
             UsersController usersController = new(mock.Object);
             usersController.Put(0, paramUser);
 
-            mock.Verify(item => item.Save(paramUser), Times.Once());
+            mock.Verify(item => item.Update(paramUser), Times.Once());
         }
     }
 
