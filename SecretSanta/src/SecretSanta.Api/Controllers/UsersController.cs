@@ -47,7 +47,8 @@ namespace SecretSanta.Api.Controllers
 
         [HttpPut("{id}")]
         public void Put (int id,[FromBody] User user){
-            UserRepository.Update(id, user);
+            user.Id = id;
+            UserRepository.Save(user);
         }
     }
 }

@@ -4,16 +4,13 @@
 @contentType = application/json
 
 ###
-GET {{host}}/api/users
-
-###
 POST {{host}}/api/users
 Content-Type: {{contentType}}
 
 {
     "FirstName": "Tyler",
     "LastName": "Jones",
-    "Id": 42
+    "Id": 0
 }
 
 ###
@@ -37,39 +34,45 @@ Content-Type: {{contentType}}
 }
 
 ###
-GET {{host}}/api/users/1
-
-###
-DELETE {{host}}/api/users/0
-
-###
-DELETE {{host}}/api/users/5
-###
 PUT {{host}}/api/users/1
 Content-Type: {{contentType}}
 
 {
     "FirstName": "Mia",
     "LastName": "Hunt",
-    "Id" : 13
+    "Id" : 1
 }
 
 ###
-PUT {{host}}/api/users/2
+PUT {{host}}/api/users/9
 Content-Type: {{contentType}}
 
 {
-    "FirstName": "Updated",
-    "LastName": "Person",
-    "Id" : 35
+    "FirstName": "Riah-Updated",
+    "LastName": "Franko",
+    "Id" : 9
 }
 
 ###
-PUT {{host}}/api/users/3
+PUT {{host}}/api/users/1
 Content-Type: {{contentType}}
 
 {
-    "FirstName": "Updated",
-    "LastName": "Person",
-    "Id" : 35
+    "FirstName": "Mia-Updated",
+    "LastName": "Hunt",
+    "Id" : 1
 }
+###
+DELETE {{host}}/api/users/0
+
+###
+DELETE {{host}}/api/users/33
+
+###
+GET {{host}}/api/users/1
+
+###
+GET {{host}}/api/users/33
+
+###
+GET {{host}}/api/users

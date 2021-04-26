@@ -33,6 +33,7 @@ namespace SecretSanta.Business.Tests
                 if (user.FirstName == "fname")
                 {
                     result = true;
+                    break;
                 }
             }
             Assert.IsTrue(result);
@@ -109,7 +110,6 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void Update_WhenCalled_UpdatesUserWithItem()
         {
-            int id = 0;
             User updatedUser = new()
             {
                 FirstName = "Updated",
@@ -118,10 +118,10 @@ namespace SecretSanta.Business.Tests
             };
 
             Mock<IUserRepository> mockUserRepository = new();
-            mockUserRepository.Setup(item => item.Update(id, updatedUser));
-            mockUserRepository.Object.Update(id, updatedUser);
+            mockUserRepository.Setup(item => item.Save(updatedUser));
+            mockUserRepository.Object.Save(updatedUser);
 
-            mockUserRepository.Verify(item => item.Update(id, updatedUser), Times.Once());
+            mockUserRepository.Verify(item => item.Save(updatedUser), Times.Once());
         }
     }
 }

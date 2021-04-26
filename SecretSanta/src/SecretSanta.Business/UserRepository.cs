@@ -5,7 +5,7 @@ namespace SecretSanta.Business
 {
     public class UserRepository : IUserRepository
     {
-        public List<User> List()
+        public ICollection<User> List()
         {
             return UserList.Users;
         }
@@ -27,20 +27,22 @@ namespace SecretSanta.Business
 
         public User Create(User item)
         {
-            UserList.Users.Add(item);
-            return item;
+            if (UserList.Users.Find(user => user.Id == item.Id) is null)
+            {
+                UserList.Users.Add(item);
+                return item;
+            }
+            return null!;
         }
 
-        public bool Update(int id, User item)
+        public void Save(User item)
         {
-            User? user = UserList.Users.Find(user => user.Id == id);
+            User? user = UserList.Users.Find(user => user.Id == item.Id);
             if (user is not null)
             {
                 int index = UserList.Users.IndexOf(user);
                 UserList.Users[index] = item;
-                return true;
             }
-            return false;
         }
     }
 }
