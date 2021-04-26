@@ -5,31 +5,42 @@ namespace SecretSanta.Business
 {
     public class UserRepository : IUserRepository
     {
-        public ICollection<User> List()
+        public List<User> List()
         {
             return UserList.Users;
         }
+
         public User? GetItem(int id)
         {
-            return UserList.Users[id];
+            return UserList.Users.Find(user => user.Id == id);
         }
+
         public bool Remove(int id)
         {
-            if (UserList.Users[id] != null)
+            User? user = UserList.Users.Find(user => user.Id == id);
+            if (user is not null)
             {
-                UserList.Users.RemoveAt(id);
-                return true;
+                return UserList.Users.Remove(user);
             }
             return false;
         }
+
         public User Create(User item)
         {
             UserList.Users.Add(item);
             return item;
         }
-        public void Update(User item)
+
+        public bool Update(int id, User item)
         {
-            UserList.Users[item.Id] = item;
+            User? user = UserList.Users.Find(user => user.Id == id);
+            if (user is not null)
+            {
+                int index = UserList.Users.IndexOf(user);
+                UserList.Users[index] = item;
+                return true;
+            }
+            return false;
         }
     }
 }

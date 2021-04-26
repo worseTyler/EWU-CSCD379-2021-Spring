@@ -5,10 +5,10 @@ namespace SecretSanta.Business
 {
     public interface IUserRepository
     {
-        ICollection<User> List();
+        List<User> List();
         User? GetItem(int id);
         bool Remove(int id);
         User Create(User item);
-        void Update(User item);
+        bool Update(int id, User item);
     }
 }

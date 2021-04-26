@@ -100,12 +100,12 @@ namespace SecretSanta.Api.Tests
                 Id = 0
             };
             Mock<IUserRepository> mock = new();
-            mock.Setup(item => item.Update(paramUser));
+            mock.Setup(item => item.Update(0, paramUser));
 
             UsersController usersController = new(mock.Object);
             usersController.Put(0, paramUser);
 
-            mock.Verify(item => item.Update(paramUser), Times.Once());
+            mock.Verify(item => item.Update(0, paramUser), Times.Once());
         }
     }
 

@@ -51,7 +51,7 @@ namespace SecretSanta.Business.Tests
             mockUserRepository.Setup(item => item.GetItem(0))
             .Returns(expectedUser);
 
-            Assert.AreEqual<User>(expectedUser, mockUserRepository.Object.GetItem(0));
+            Assert.AreEqual(expectedUser.FirstName, mockUserRepository.Object.GetItem(0).FirstName);
         }
 
         [TestMethod]
@@ -109,18 +109,19 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void Update_WhenCalled_UpdatesUserWithItem()
         {
+            int id = 0;
             User updatedUser = new()
             {
                 FirstName = "Updated",
                 LastName = "User",
-                Id = 0
+                Id = 12
             };
 
             Mock<IUserRepository> mockUserRepository = new();
-            mockUserRepository.Setup(item => item.Update(updatedUser));
-            mockUserRepository.Object.Update(updatedUser);
+            mockUserRepository.Setup(item => item.Update(id, updatedUser));
+            mockUserRepository.Object.Update(id, updatedUser);
 
-            mockUserRepository.Verify(item => item.Update(updatedUser), Times.Once());
+            mockUserRepository.Verify(item => item.Update(id, updatedUser), Times.Once());
         }
     }
 }

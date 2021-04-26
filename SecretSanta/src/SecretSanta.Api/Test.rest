@@ -21,6 +21,16 @@ POST {{host}}/api/users
 Content-Type: {{contentType}}
 
 {
+    "FirstName": "Riah",
+    "LastName": "Franko",
+    "Id": 9
+}
+
+###
+POST {{host}}/api/users
+Content-Type: {{contentType}}
+
+{
     "FirstName": "Obediah",
     "LastName": "Slytherin",
     "Id": 33
@@ -45,7 +55,17 @@ Content-Type: {{contentType}}
 }
 
 ###
-PUT {{host}}/api/users/4
+PUT {{host}}/api/users/2
+Content-Type: {{contentType}}
+
+{
+    "FirstName": "Updated",
+    "LastName": "Person",
+    "Id" : 35
+}
+
+###
+PUT {{host}}/api/users/3
 Content-Type: {{contentType}}
 
 {

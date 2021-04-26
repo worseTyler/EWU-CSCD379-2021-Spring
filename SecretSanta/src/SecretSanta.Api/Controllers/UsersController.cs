@@ -21,17 +21,17 @@ namespace SecretSanta.Api.Controllers
         }
 
         // /api/users/<index>
-        [HttpGet("{index}")]
-        public User Get(int index)
+        [HttpGet("{id}")]
+        public User Get(int id)
         {
-            return UserRepository.GetItem(index);
+            return UserRepository.GetItem(id);
         }
 
         //DELETE /api/users/<index>
-        [HttpDelete("{index}")]
-        public ActionResult Delete(int index)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-           if (!UserRepository.Remove(index))
+           if (!UserRepository.Remove(id))
            {
                return NoContent();
            }
@@ -45,10 +45,9 @@ namespace SecretSanta.Api.Controllers
             UserRepository.Create(user);
         }
 
-        [HttpPut("{index}")]
-        public void Put (int index,[FromBody] User user){
-            user.Id = index;
-            UserRepository.Update(user);
+        [HttpPut("{id}")]
+        public void Put (int id,[FromBody] User user){
+            UserRepository.Update(id, user);
         }
     }
 }
