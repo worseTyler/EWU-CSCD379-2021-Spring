@@ -15,6 +15,11 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class UserControllerTests
     {
+		[TestMethod]
+		public void UserControllerTests
+		{
+			Assert.Fail();	
+		}
         
     }
 }
