@@ -1,14 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Web.Data;
 using SecretSanta.Web.ViewModels;
+using System;
+using SecretSanta.Web.Api;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        public IActionResult Index()
+        public IUsersClient Client { get; }
+
+        public UsersController(IUsersClient client)
         {
-            return View(MockData.Users);
+            Client = client ?? throw new ArgumentNullException(nameof(client));
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            ICollection<UpdateUser> users = await Client.GetAllAsync();
+            List<UserViewModel> viewModelUsers = new();
+            int counter = 0;
+            foreach(UpdateUser user in users)
+            {
+                viewModelUsers.Add(new UserViewModel
+                {
+                    Id = counter,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                });
+                counter++;
+            }
+            return View(viewModelUsers);
         }
 
         public IActionResult Create()
@@ -17,28 +41,42 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserViewModel viewModel)
+        public async Task<IActionResult> Create(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Users.Add(viewModel);
+                await Client.PostAsync(new UpdateUser {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
+                });
                 return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View(MockData.Users.Find(user => user.Id == id));
+            UpdateUser updateUser = await Client.GetAsync(id);
+            UserViewModel userViewModel = new(){
+                FirstName = updateUser.FirstName,
+                LastName = updateUser.LastName,
+                Id = id
+            };
+            return View(userViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(UserViewModel viewModel)
+        public async Task<IActionResult> Edit(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Users[MockData.Users.IndexOf(MockData.Users.Find(user => user.Id == viewModel.Id))] = viewModel;
+                //MockData.Users[MockData.Users.IndexOf(MockData.Users.Find(user => user.Id == viewModel.Id))] = viewModel;
+
+                await Client.PutAsync(viewModel.Id, new UpdateUser{
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
+                });
                 return RedirectToAction(nameof(Index));
             }
 
@@ -46,9 +84,9 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            MockData.Users.Remove(MockData.Users.Find(user => user.Id == id));
+            await Client.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

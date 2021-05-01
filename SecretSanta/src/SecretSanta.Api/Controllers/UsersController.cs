@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Business;
 using SecretSanta.Data;
+using SecretSanta.Api.Dto;
+using System.Linq;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -18,17 +20,25 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<UpdateUser> Get()
         {
-            return Repository.List();
+            return Repository.List().Select(user => new UpdateUser{
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? ""
+            });
         }
 
         [HttpGet("{id}")]
-        public ActionResult<User?> Get(int id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(UpdateUser), StatusCodes.Status200OK)]
+        public ActionResult<UpdateUser?> Get(int id)
         {
             User? user = Repository.GetItem(id);
             if (user is null) return NotFound();
-            return user;
+            return new UpdateUser(){
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? ""
+            };
         }
 
         [HttpDelete("{id}")]
@@ -45,18 +55,28 @@ namespace SecretSanta.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
-        public ActionResult<User?> Post([FromBody] User? user)
+        [ProducesResponseType(typeof(UpdateUser), StatusCodes.Status200OK)]
+        public ActionResult<UpdateUser?> Post([FromBody] UpdateUser? user)
         {
             if (user is null)
             {
                 return BadRequest();
             }
-            return Repository.Create(user);
+
+            Repository.Create(new Data.User{
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? "",
+                Id = Repository.List().Select(item => item.Id).Max()
+            });
+
+            return user; // this feels wrong, im not entirely sure why I am wanting to return ActionResult<UpdateUser?>
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User? user)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult Put(int id, [FromBody] UpdateUser? user)
         {
             if (user is null)
             {
