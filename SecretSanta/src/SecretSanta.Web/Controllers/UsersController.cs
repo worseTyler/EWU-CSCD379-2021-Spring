@@ -72,11 +72,10 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //MockData.Users[MockData.Users.IndexOf(MockData.Users.Find(user => user.Id == viewModel.Id))] = viewModel;
-
                 await Client.PutAsync(viewModel.Id, new UserDto{
                     FirstName = viewModel.FirstName,
-                    LastName = viewModel.LastName
+                    LastName = viewModel.LastName,
+                    Id = viewModel.Id
                 });
                 return RedirectToAction(nameof(Index));
             }
@@ -87,7 +86,10 @@ namespace SecretSanta.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            await Client.DeleteAsync(id);
+            if(id >= 0)
+                await Client.DeleteAsync(id);
+     
+
             return RedirectToAction(nameof(Index));
         }
     }

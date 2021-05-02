@@ -2,14 +2,21 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SecretSanta.Web.Api;
+using System.Linq;
 
 namespace SecretSanta.Web.Tests.Api
 {
     public class TestableUsersClient : IUsersClient
     {
-        public Task DeleteAsync(int id)
+        public List<UserDto> DeleteAsyncUsersList { get; set; } = new();
+        public int DeleteAsyncInvocationCount {get; set;} = 0;
+        public Task? DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            //Task task = new(() => {
+                DeleteAsyncInvocationCount++;
+                DeleteAsyncUsersList.RemoveAt(id);
+            //});
+            return null;
         }
 
         public Task DeleteAsync(int id, CancellationToken cancellationToken)
@@ -30,9 +37,12 @@ namespace SecretSanta.Web.Tests.Api
             throw new System.NotImplementedException();
         }
 
-        public Task<UserDto> GetAsync(int id)
+        public UserDto? GetAsyncReturnValue {get; set;} = new();
+        public int GetAsyncInvocationCounter {get; set;} = 0;
+        public Task<UserDto?> GetAsync(int id)
         {
-            throw new System.NotImplementedException();
+            GetAsyncInvocationCounter++;
+            return Task.FromResult<UserDto?>(GetAsyncReturnValue);
         }
 
         public Task<UserDto> GetAsync(int id, CancellationToken cancellationToken)
@@ -54,9 +64,13 @@ namespace SecretSanta.Web.Tests.Api
             throw new System.NotImplementedException();
         }
 
-        public Task PutAsync(int id, UserDto user)
+        public List<UserDto> PutAsyncInvocationParameters {get;} = new();
+        public int PutAsyncInvocationCounter {get; set;} = 0;
+        public Task PutAsync(int id, UserDto userDto)
         {
-            throw new System.NotImplementedException();
+            PutAsyncInvocationCounter++;
+            PutAsyncInvocationParameters[id] = userDto;
+            return Task.FromResult(userDto);
         }
 
         public Task PutAsync(int id, UserDto user, CancellationToken cancellationToken)
