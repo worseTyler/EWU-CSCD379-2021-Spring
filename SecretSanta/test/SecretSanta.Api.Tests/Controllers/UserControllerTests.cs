@@ -22,6 +22,9 @@ namespace SecretSanta.Api.Tests.Controllers
 		{
 			UsersController usersController = new(null!);
 		}
-        
-    }
+
+		[TestMethod]
+        public void Get_WithData_ReturnsUsers(){
+    	}
+	}
 }

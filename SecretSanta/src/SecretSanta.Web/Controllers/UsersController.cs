@@ -22,12 +22,12 @@ namespace SecretSanta.Web.Controllers
         {
             ICollection<UserDto> users = await Client.GetAllAsync();
             List<UserViewModel> viewModelUsers = new();
-            //int counter = users.Select(item => item.Id).Max() ?? 0;
+            int counter = users.Select(item => item.Id).Max() ?? 0;
             foreach(UserDto user in users)
             {
                 viewModelUsers.Add(new UserViewModel
                 {
-                    Id = user.Id ?? -1,
+                    Id = user.Id ?? counter,
                     FirstName = user.FirstName,
                     LastName = user.LastName
                 });

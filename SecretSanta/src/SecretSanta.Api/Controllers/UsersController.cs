@@ -23,8 +23,8 @@ namespace SecretSanta.Api.Controllers
         public IEnumerable<UserDto> Get()
         {
             return Repository.List().Select(user => new UserDto{
-                FirstName = user.FirstName ?? "",
-                LastName = user.LastName ?? "",
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Id = user.Id
             });
         }
