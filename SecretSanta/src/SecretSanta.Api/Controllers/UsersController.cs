@@ -20,30 +20,33 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UpdateUser> Get()
+        public IEnumerable<UserDto> Get()
         {
-            return Repository.List().Select(user => new UpdateUser{
+            return Repository.List().Select(user => new UserDto{
                 FirstName = user.FirstName ?? "",
-                LastName = user.LastName ?? ""
+                LastName = user.LastName ?? "",
+                Id = user.Id
             });
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(UpdateUser), StatusCodes.Status200OK)]
-        public ActionResult<UpdateUser?> Get(int id)
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public ActionResult<UserDto?> Get(int id)
         {
             User? user = Repository.GetItem(id);
             if (user is null) return NotFound();
-            return new UpdateUser(){
+            return new UserDto(){
                 FirstName = user.FirstName ?? "",
-                LastName = user.LastName ?? ""
+                LastName = user.LastName ?? "",
+                Id = id
             };
         }
 
         [HttpDelete("{id}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(int id)
         {
             if (Repository.Remove(id))
@@ -55,28 +58,28 @@ namespace SecretSanta.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(UpdateUser), StatusCodes.Status200OK)]
-        public ActionResult<UpdateUser?> Post([FromBody] UpdateUser? user)
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public ActionResult<UserDto?> Post([FromBody] UserDto? userDto)
         {
-            if (user is null)
+            if (userDto is null)
             {
                 return BadRequest();
             }
 
             Repository.Create(new Data.User{
-                FirstName = user.FirstName ?? "",
-                LastName = user.LastName ?? "",
-                Id = Repository.List().Select(item => item.Id).Max()
+                FirstName = userDto.FirstName ?? "",
+                LastName = userDto.LastName ?? "",
+                Id = userDto.Id ?? Repository.List().Select(item => item.Id).Max()
             });
 
-            return user; // this feels wrong, im not entirely sure why I am wanting to return ActionResult<UpdateUser?>
+            return userDto;
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult Put(int id, [FromBody] UpdateUser? user)
+        public ActionResult Put(int id, [FromBody] UserDto? user)
         {
             if (user is null)
             {

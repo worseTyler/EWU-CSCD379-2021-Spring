@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SecretSanta.Api.Controllers;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -16,9 +17,10 @@ namespace SecretSanta.Api.Tests.Controllers
     public class UserControllerTests
     {
 		[TestMethod]
-		public void UserControllerTest()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Constructor_GivenNullUserRepository_ThrowsArgumentNullException()
 		{
-			Assert.Fail();	
+			UsersController usersController = new(null!);
 		}
         
     }

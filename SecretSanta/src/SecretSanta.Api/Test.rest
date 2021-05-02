@@ -1,0 +1,67 @@
+@hostname = 127.0.0.1 
+@port = 5101 
+@host = https://{{hostname}}:{{port}} 
+@contentType = application/json
+
+### 
+POST {{host}}/api/users 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Tyler", "LastName": "Jones", "Id": 0
+}
+
+### 
+POST {{host}}/api/users 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Riah", "LastName": "Franko", "Id": 9
+}
+
+### 
+POST {{host}}/api/users 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Obediah", "LastName": "Slytherin", "Id": 33
+}
+
+### 
+PUT {{host}}/api/users/1 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Mia", "LastName": "Hunt"
+}
+
+### 
+PUT {{host}}/api/users/9 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Riah-Updated", "LastName": "Franko", "Id" : 9
+}
+
+### 
+PUT {{host}}/api/users/1 
+Content-Type: {{contentType}}
+
+{
+"FirstName": "Mia-Updated", "LastName": "Hunt", "Id" : 1
+}
+
+###
+DELETE {{host}}/api/users/2
+
+### 
+DELETE {{host}}/api/users/33
+
+### 
+GET {{host}}/api/users/1
+
+### 
+GET {{host}}/api/users/33
+
+### 
+GET {{host}}/api/users

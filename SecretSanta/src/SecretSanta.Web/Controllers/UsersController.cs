@@ -5,6 +5,7 @@ using System;
 using SecretSanta.Web.Api;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SecretSanta.Web.Controllers
 {
@@ -19,18 +20,17 @@ namespace SecretSanta.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ICollection<UpdateUser> users = await Client.GetAllAsync();
+            ICollection<UserDto> users = await Client.GetAllAsync();
             List<UserViewModel> viewModelUsers = new();
-            int counter = 0;
-            foreach(UpdateUser user in users)
+            //int counter = users.Select(item => item.Id).Max() ?? 0;
+            foreach(UserDto user in users)
             {
                 viewModelUsers.Add(new UserViewModel
                 {
-                    Id = counter,
+                    Id = user.Id ?? -1,
                     FirstName = user.FirstName,
                     LastName = user.LastName
                 });
-                counter++;
             }
             return View(viewModelUsers);
         }
@@ -45,9 +45,10 @@ namespace SecretSanta.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await Client.PostAsync(new UpdateUser {
+                await Client.PostAsync(new UserDto {
                     FirstName = viewModel.FirstName,
-                    LastName = viewModel.LastName
+                    LastName = viewModel.LastName,
+                    Id = viewModel.Id
                 });
                 return RedirectToAction(nameof(Index));
             }
@@ -57,7 +58,7 @@ namespace SecretSanta.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            UpdateUser updateUser = await Client.GetAsync(id);
+            UserDto updateUser = await Client.GetAsync(id);
             UserViewModel userViewModel = new(){
                 FirstName = updateUser.FirstName,
                 LastName = updateUser.LastName,
@@ -73,7 +74,7 @@ namespace SecretSanta.Web.Controllers
             {
                 //MockData.Users[MockData.Users.IndexOf(MockData.Users.Find(user => user.Id == viewModel.Id))] = viewModel;
 
-                await Client.PutAsync(viewModel.Id, new UpdateUser{
+                await Client.PutAsync(viewModel.Id, new UserDto{
                     FirstName = viewModel.FirstName,
                     LastName = viewModel.LastName
                 });
