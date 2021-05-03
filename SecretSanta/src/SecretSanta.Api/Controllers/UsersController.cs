@@ -69,7 +69,7 @@ namespace SecretSanta.Api.Controllers
             Repository.Create(new Data.User{
                 FirstName = userDto.FirstName ?? "",
                 LastName = userDto.LastName ?? "",
-                Id = userDto.Id ?? Repository.List().Select(item => item.Id).Max()
+                Id = (Repository.List().Select(item => item.Id).Max() + 1)
             });
 
             return userDto;

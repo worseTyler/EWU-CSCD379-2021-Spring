@@ -13,7 +13,7 @@ using SecretSanta.Web.ViewModels;
 namespace SecretSanta.Web.Tests
 {
     [TestClass]
-    public class UsersController
+    public class UsersControllerTests
     {
         private WebApplicationFactory Factory { get; } = new();
 
@@ -35,7 +35,7 @@ namespace SecretSanta.Web.Tests
         }
 
         [TestMethod]
-        public async Task Create_WithValidModelState_InvokesPostAsync()
+        public async Task CreatePost_WithValidModelState_InvokesPostAsync()
         {
             TestableUsersClient usersClient = Factory.Client;
             HttpClient client = Factory.CreateClient();
@@ -61,7 +61,7 @@ namespace SecretSanta.Web.Tests
         }
 
         [TestMethod]
-        public async Task EditPost_WithValidModelStateOnCompletingNewObject_InvokesPutAsync()
+        public async Task EditPost_WithValidModelState_InvokesPutAsync()
         {
             string firstName = "Tyler";
             int id = 0;
@@ -75,11 +75,11 @@ namespace SecretSanta.Web.Tests
             Dictionary<string, string?> values = new()
             {
                 { nameof(UserViewModel.FirstName), firstName },
-                { nameof(UserViewModel.Id), id.ToString() }
+                { nameof(UserViewModel.Id), id.ToString() },
             };
             FormUrlEncodedContent content = new(values!);
 
-            HttpResponseMessage response = await client.PutAsync("/Users/Edit", content);
+            HttpResponseMessage response = await client.PostAsync("/Users/Edit", content);
 
             response.EnsureSuccessStatusCode();
             Assert.AreEqual<int>(1, usersClient.PutAsyncInvocationCounter);
@@ -116,9 +116,9 @@ namespace SecretSanta.Web.Tests
                 new UserDto {FirstName = "Bad", Id = 2}
             };
 
-            usersClient.DeleteAsyncUsersList = usersList;
-            StringContent json = new("{\"id\":2 }");
-           HttpResponseMessage response = await client.PostAsync("/Users/Delete", json);
+           usersClient.DeleteAsyncUsersList = usersList;
+
+           HttpResponseMessage response = await client.PostAsync("/Users/Delete/2", new StringContent("{}"));
 
            response.EnsureSuccessStatusCode();
 
@@ -128,6 +128,34 @@ namespace SecretSanta.Web.Tests
                     .Contains("Bad"));
         }
 
+        [TestMethod]
+        public async Task Delege_GivenNegativeId_DoesNotInvokeDelete ()
+        {
+            TestableUsersClient usersClient = Factory.Client;
+            HttpClient client = Factory.CreateClient();
 
+            List<UserDto> usersList = new()
+            {
+                new UserDto { FirstName = "Tyler", Id = 0 },
+                new UserDto { FirstName = "Smells", Id = 1 },
+                new UserDto { FirstName = "Bad", Id = 2 }
+            };
+
+            usersClient.DeleteAsyncUsersList = usersList;
+
+            HttpResponseMessage response = await client.PostAsync("/Users/Delete/-1", new StringContent("{}"));
+
+            response.EnsureSuccessStatusCode();
+
+            Assert.AreEqual<int>(0, usersClient.DeleteAsyncInvocationCount);
+            Assert.IsTrue(usersClient.DeleteAsyncUsersList
+                     .Select(item => item.FirstName)
+                     .Contains("Bad"));
+        }
+
+        // I have no clue how to test such that the ModelState would be invalid
+        // However, there are no instances where ModelState is invalid and our Web and Api projects
+        // communicated with each other so I don't think it's super important considering what we
+        // are testing here
     }
 }

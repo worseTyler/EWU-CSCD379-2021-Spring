@@ -88,8 +88,6 @@ namespace SecretSanta.Web.Controllers
         {
             if(id >= 0)
                 await Client.DeleteAsync(id);
-     
-
             return RedirectToAction(nameof(Index));
         }
     }

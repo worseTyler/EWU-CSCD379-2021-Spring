@@ -9,14 +9,14 @@ namespace SecretSanta.Web.Tests.Api
     public class TestableUsersClient : IUsersClient
     {
         public List<UserDto> DeleteAsyncUsersList { get; set; } = new();
-        public int DeleteAsyncInvocationCount {get; set;} = 0;
-        public Task? DeleteAsync(int id)
+        public int DeleteAsyncInvocationCount { get; set; } = 0;
+        public Task DeleteAsync(int id)
         {
-            //Task task = new(() => {
+            return Task.Run(() =>
+            {
                 DeleteAsyncInvocationCount++;
                 DeleteAsyncUsersList.RemoveAt(id);
-            //});
-            return null;
+            });
         }
 
         public Task DeleteAsync(int id, CancellationToken cancellationToken)
@@ -37,8 +37,8 @@ namespace SecretSanta.Web.Tests.Api
             throw new System.NotImplementedException();
         }
 
-        public UserDto? GetAsyncReturnValue {get; set;} = new();
-        public int GetAsyncInvocationCounter {get; set;} = 0;
+        public UserDto? GetAsyncReturnValue { get; set; } = new();
+        public int GetAsyncInvocationCounter { get; set; } = 0;
         public Task<UserDto?> GetAsync(int id)
         {
             GetAsyncInvocationCounter++;
@@ -50,8 +50,8 @@ namespace SecretSanta.Web.Tests.Api
             throw new System.NotImplementedException();
         }
 
-        public List<UserDto> PostAsyncInvocationParameters {get;} = new();
-        public int PostAsyncInvocationCounter {get; set;} = 0;
+        public List<UserDto> PostAsyncInvocationParameters { get; } = new();
+        public int PostAsyncInvocationCounter { get; set; } = 0;
         public Task<UserDto> PostAsync(UserDto userDto)
         {
             PostAsyncInvocationCounter++;
@@ -64,8 +64,8 @@ namespace SecretSanta.Web.Tests.Api
             throw new System.NotImplementedException();
         }
 
-        public List<UserDto> PutAsyncInvocationParameters {get;} = new();
-        public int PutAsyncInvocationCounter {get; set;} = 0;
+        public List<UserDto> PutAsyncInvocationParameters { get; } = new();
+        public int PutAsyncInvocationCounter { get; set; } = 0;
         public Task PutAsync(int id, UserDto userDto)
         {
             PutAsyncInvocationCounter++;
