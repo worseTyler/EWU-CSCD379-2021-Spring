@@ -7,27 +7,46 @@ namespace SecretSanta.Api.Tests.Business
 {
     public class TestableUserRepository : IUserRepository
     {
-        public User Create(User item)
+
+		public List<User>? UserList { get; set; }
+        public ICollection<User> List()
         {
-            throw new System.NotImplementedException();
+			if ( UserList is null)
+			{
+				UserList = new List<User>();
+			}
+			return UserList;
         }
+		
+		public User Create(User newUser)
+		{
+			if ( UserList is null)
+			{
+				UserList = new List<User>();
+			}
+			UserList.Add(newUser);	
+			return newUser;
+		}
 
         public User? GetItemUser { get; set; }
         public int GetItemId { get; set; }
         public User? GetItem(int id)
         {
-            GetItemId = id;
-            return GetItemUser;
-        }
-
-        public ICollection<User> List()
-        {
-            throw new System.NotImplementedException();
+			if (GetItemUser is not null && GetItemUser.Id == id)
+			{
+				GetItemId = id;
+				return GetItemUser;
+			}
+			return null;
         }
 
         public bool Remove(int id)
         {
-            throw new System.NotImplementedException();
+			if (GetItemUser is not null && GetItemUser.Id == id)
+			{
+				return true;
+			}
+			return false;
         }
 
         public User? SavedUser { get; set; }

@@ -129,7 +129,7 @@ namespace SecretSanta.Web.Tests
         }
 
         [TestMethod]
-        public async Task Delege_GivenNegativeId_DoesNotInvokeDelete ()
+        public async Task Delete_GivenNegativeId_DoesNotInvokeDelete ()
         {
             TestableUsersClient usersClient = Factory.Client;
             HttpClient client = Factory.CreateClient();
