@@ -2,15 +2,15 @@ name: Assignment Build And Test
 
 on:
   push:
-    branches: [ Lecture* ]
+    branches: [ Assignment* ]
   pull_request:
-    branches: [ Lecture* ]
+    branches: [ Assignment* ]
 
 jobs:
   build:
     defaults:
       run:
-        working-directory: ./UserGroup/
+        working-directory: ./SecretSanta/
     runs-on: ubuntu-latest
 
     steps:
@@ -22,20 +22,17 @@ jobs:
     - name: Get Directory
       run: pwd
 
-    - name: npm install
-      working-directory: ./UserGroup/src/UserGroup.Web/
-      run: npm install
-    - name: npm build
-      working-directory: ./UserGroup/src/UserGroup.Web/
-      run: npm run build:prod
+    - name: Run Npm Build
+      working-directory: ./SecretSanta/src/SecretSanta.Web/
+      run: |
+        npm install
+        npm run build:prod
 
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
-    - name: List Files in Share Views directory
-      working-directory: ./UserGroup/src/UserGroup.Web/
-      run: ls ./Views/Shared
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
