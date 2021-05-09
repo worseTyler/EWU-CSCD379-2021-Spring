@@ -1,4 +1,4 @@
 ﻿
 # Assignment 6
 
-![](../../workflows/.NET/badge.svg)
+![](../../workflows/Assignment Build And Test/badge.svg)
