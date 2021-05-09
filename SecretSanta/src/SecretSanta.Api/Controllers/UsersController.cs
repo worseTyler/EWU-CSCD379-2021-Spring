@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Business;
-using SecretSanta.Data;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -19,20 +18,22 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Dto.User> Get()
         {
-            return Repository.List();
+            return Repository.List().Select(x => ToDto(x)!);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<User?> Get(int id)
+        public ActionResult<Dto.User?> Get(int id)
         {
-            User? user = Repository.GetItem(id);
+            Dto.User? user = ToDto(Repository.GetItem(id));
             if (user is null) return NotFound();
             return user;
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult Delete(int id)
         {
             if (Repository.Remove(id))
@@ -43,24 +44,20 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User?> Post([FromBody] User? user)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Dto.User), (int)HttpStatusCode.OK)]
+        public ActionResult<Dto.User?> Post([FromBody] Dto.User user)
         {
-            if (user is null)
-            {
-                return BadRequest();
-            }
-            return Repository.Create(user);
+            return ToDto(Repository.Create(FromDto(user)!));
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User? user)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public ActionResult Put(int id, [FromBody] Dto.UpdateUser? user)
         {
-            if (user is null)
-            {
-                return BadRequest();
-            }
-
-            User? foundUser = Repository.GetItem(id);
+            Data.User? foundUser = Repository.GetItem(id);
             if (foundUser is not null)
             {
                 foundUser.FirstName = user.FirstName ?? "";
@@ -70,6 +67,28 @@ namespace SecretSanta.Api.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+
+        private static Dto.User? ToDto(Data.User? user)
+        {
+            if (user is null) return null;
+            return new Dto.User
+            {
+                FirstName = user.FirstName,
+                Id = user.Id,
+                LastName = user.LastName
+            };
+        }
+
+        public static Data.User? FromDto(Dto.User? user)
+        {
+            if (user is null) return null;
+            return new Data.User
+            {
+                Id = user.Id,
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? ""
+            };
         }
     }
 }
