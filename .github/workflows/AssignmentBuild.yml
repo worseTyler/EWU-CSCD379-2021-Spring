@@ -29,7 +29,7 @@ jobs:
         npm run build:prod
 
     - name: Trust Certificates
-      run: dotnet dev-certs https --trust
+      run: dotnet dev-certs https -v
       
     - name: Restore dependencies
       run: dotnet restore
