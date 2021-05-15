@@ -9,25 +9,33 @@ namespace SecretSanta.Web.EndToEnd
     public class EndToEndTests
     {
         private static WebHostServerFixture<Web.Startup, SecretSanta.Api.Startup> Server;
+        private static IPlaywright PlaywrightObj;
+        private static PlaywrightSharp.Chromium.IChromiumBrowser Browser;
+        private static string LocalHost = "";
 
         [ClassInitialize]
-        public static void InitializeClass(TestContext testContext)
+        public static async Task InitializeClass(TestContext testContext)
         {
             Server = new();
+            LocalHost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
+            PlaywrightObj = await Playwright.CreateAsync();
+            Browser = await PlaywrightObj.Chromium.LaunchAsync(new LaunchOptions
+            {
+                Headless = true
+            });
+        }
+        [ClassCleanup]
+        public static async Task CleanupClass()
+        {
+            PlaywrightObj.Dispose();
+            await Browser.DisposeAsync();
         }
 
         [TestMethod]
         public async Task ValidateHomepage()
         {
-            var localhost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
-            {
-                Headless = true
-            });
-
-            var page = await browser.NewPageAsync();
-            var response = await page.GoToAsync(localhost);
+            var page = await Browser.NewPageAsync();
+            var response = await page.GoToAsync(LocalHost);
 
             Assert.IsTrue(response.Ok);
 
@@ -38,38 +46,24 @@ namespace SecretSanta.Web.EndToEnd
         [TestMethod]
         public async Task NavigateBetweenPages()
         {
-            var localhost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
-            {
-                Headless = true
-            });
-
-            var page = await browser.NewPageAsync();
-            var response = await page.GoToAsync(localhost);
+            var page = await Browser.NewPageAsync();
+            var response = await page.GoToAsync(LocalHost);
 
             Assert.IsTrue(response.Ok);
 
             await page.ClickAsync("text=Users");   
-            Assert.AreEqual<string>(localhost + "Users", page.Url);         
+            Assert.AreEqual<string>(LocalHost + "Users", page.Url);         
             await page.ClickAsync("text=Gifts"); 
-            Assert.AreEqual<string>(localhost + "Gifts", page.Url);      
+            Assert.AreEqual<string>(LocalHost + "Gifts", page.Url);      
             await page.ClickAsync("text=Groups");                     
-            Assert.AreEqual<string>(localhost + "Groups", page.Url);    
+            Assert.AreEqual<string>(LocalHost + "Groups", page.Url);    
         }
 
         [TestMethod]
         public async Task CreateUser()
         {
-            var localhost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
-            {
-                Headless = true
-            });
-
-            var page = await browser.NewPageAsync();
-            var response = await page.GoToAsync(localhost);
+            var page = await Browser.NewPageAsync();
+            var response = await page.GoToAsync(LocalHost);
 
             Assert.IsTrue(response.Ok);
 
@@ -91,15 +85,8 @@ namespace SecretSanta.Web.EndToEnd
         [TestMethod]
         public async Task UpdateUser()
         {
-            var localhost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
-            {
-                Headless = true
-            });
-
-            var page = await browser.NewPageAsync();
-            var response = await page.GoToAsync(localhost);
+            var page = await Browser.NewPageAsync();
+            var response = await page.GoToAsync(LocalHost);
 
             Assert.IsTrue(response.Ok);
 
@@ -120,16 +107,8 @@ namespace SecretSanta.Web.EndToEnd
         [TestMethod]
         public async Task DeleteUser()
         {
-            var localhost = Server.WebRootUri.AbsoluteUri.Replace("127.0.0.1", "localhost");
-            using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
-            {
-                Headless = false,
-                SlowMo = 1000
-            });
-
-            var page = await browser.NewPageAsync();
-            var response = await page.GoToAsync(localhost);
+            var page = await Browser.NewPageAsync();
+            var response = await page.GoToAsync(LocalHost);
 
             Assert.IsTrue(response.Ok);
 
