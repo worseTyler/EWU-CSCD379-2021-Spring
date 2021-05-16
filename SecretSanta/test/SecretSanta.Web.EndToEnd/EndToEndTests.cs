@@ -108,7 +108,7 @@ namespace SecretSanta.Web.EndToEnd
         }
 
         [TestMethod]
-        public async Task DeleteUser()
+        public async Task DeleteGift()
         {
             var page = await Browser.NewPageAsync();
             var response = await page.GoToAsync(LocalHost);
