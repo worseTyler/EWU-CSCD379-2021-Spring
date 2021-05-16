@@ -12,6 +12,7 @@ namespace SecretSanta.Web.Tests.Controllers
     [TestClass]
     public class UsersControllersTests
     {
+        /*
         [TestMethod]
         public void Constructor_WithNullRepository_ThrowException()
         {
@@ -185,5 +186,6 @@ namespace SecretSanta.Web.Tests.Controllers
             Assert.AreEqual(1, usersClient.DeleteInvocationCount);
             Assert.IsNull(await usersClient.GetAsync(42));
         }
+        */
     }
 }
