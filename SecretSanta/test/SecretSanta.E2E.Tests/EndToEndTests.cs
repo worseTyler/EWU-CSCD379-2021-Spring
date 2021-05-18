@@ -8,7 +8,7 @@ namespace SecretSanta.E2E.Tests
     [TestClass]
     public class EndToEndTests
     {
-        private static WebHostServerFixture<SecretSanta.Web.Startup, SecretSanta.Api.Startup> _Server;
+        private static WebHostServerFixture<Web.Startup, Api.Startup> _Server;
         [ClassInitialize]
         public static void InitializeClass(TestContext testContext)
         {
@@ -103,7 +103,7 @@ namespace SecretSanta.E2E.Tests
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new LaunchOptions
             {
-                Headless = true
+                Headless = false
             });
 
             var page = await browser.NewPageAsync();

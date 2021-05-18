@@ -13,6 +13,7 @@ namespace SecretSanta.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddControllers();
             services.AddSwaggerDocument();
 

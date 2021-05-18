@@ -16,13 +16,13 @@ namespace SecretSanta.E2E.Tests
 {
     public abstract class WebHostServerFixture : IDisposable
     {
-        public readonly Lazy<Uri> WebRootUriInitializer;
+        private Lazy<Uri> WebRootUriInitializer { get; }
         public Uri WebRootUri => WebRootUriInitializer.Value;
-        public IHost WebHost {get; set;}
+        public IHost? WebHost { get; set; }
 
-        public readonly Lazy<Uri> ApiRootUriInitializer;
+        private Lazy<Uri> ApiRootUriInitializer { get; }
         public Uri ApiRootUri => ApiRootUriInitializer.Value;
-        public IHost ApiHost { get; set; }
+        public IHost? ApiHost { get; set; }
 
         public WebHostServerFixture()
         {
@@ -34,7 +34,7 @@ namespace SecretSanta.E2E.Tests
         {
             using var isDone = new ManualResetEvent(false);
 
-            ExceptionDispatchInfo edi = null;
+            ExceptionDispatchInfo? edi = null;
             new Thread(() =>
             {
                 try
@@ -89,8 +89,8 @@ namespace SecretSanta.E2E.Tests
     }
 
     public class WebHostServerFixture<WStartup, AStartup> : WebHostServerFixture
-    where WStartup : class
-    where AStartup : class
+        where WStartup : class
+        where AStartup : class
     {
         protected override IHost CreateWebHost()
         {
