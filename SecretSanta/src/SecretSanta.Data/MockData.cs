@@ -4,6 +4,22 @@ namespace SecretSanta.Data
 {
     public static class MockData
     {
+        static MockData()
+        {
+            PutUserInGroup(Users[1], Groups[1]);
+            PutUserInGroup(Users[2], Groups[1]);
+            PutUserInGroup(Users[3], Groups[2]);
+            PutUserInGroup(Users[4], Groups[2]);
+            PutUserInGroup(Users[5], Groups[1]);
+
+            static void PutUserInGroup(User user, Group group)
+            {
+                user.Groups.Add(group);
+                group.Users.Add(user);
+            }
+        }
+
+
         public static Dictionary<int, User> Users { get; } = new()
         {
             {
@@ -16,7 +32,7 @@ namespace SecretSanta.Data
                 }
             },
             {
-                2, 
+                2,
                 new User
                 {
                     Id = 2,
@@ -49,6 +65,26 @@ namespace SecretSanta.Data
                     Id = 5,
                     FirstName = "Miracle",
                     LastName = "Max"
+                }
+            }
+        };
+
+        public static Dictionary<int, Group> Groups { get; } = new()
+        {
+            {
+                1,
+                new Group
+                {
+                    Id = 1,
+                    Name = "IntelliTect Christmas Party"
+                }
+            },
+            {
+                2,
+                new Group
+                {
+                    Id = 2,
+                    Name = "Friends"
                 }
             }
         };

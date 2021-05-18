@@ -20,13 +20,13 @@ namespace SecretSanta.Api.Controllers
         [HttpGet]
         public IEnumerable<Dto.User> Get()
         {
-            return Repository.List().Select(x => ToDto(x)!);
+            return Repository.List().Select(x => Dto.User.ToDto(x)!);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Dto.User?> Get(int id)
         {
-            Dto.User? user = ToDto(Repository.GetItem(id));
+            Dto.User? user = Dto.User.ToDto(Repository.GetItem(id));
             if (user is null) return NotFound();
             return user;
         }
@@ -48,7 +48,7 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType(typeof(Dto.User), (int)HttpStatusCode.OK)]
         public ActionResult<Dto.User?> Post([FromBody] Dto.User user)
         {
-            return ToDto(Repository.Create(FromDto(user)!));
+            return Dto.User.ToDto(Repository.Create(Dto.User.FromDto(user)!));
         }
 
         [HttpPut("{id}")]
@@ -60,35 +60,13 @@ namespace SecretSanta.Api.Controllers
             Data.User? foundUser = Repository.GetItem(id);
             if (foundUser is not null)
             {
-                foundUser.FirstName = user.FirstName ?? "";
-                foundUser.LastName = user.LastName ?? "";
+                foundUser.FirstName = user?.FirstName ?? "";
+                foundUser.LastName = user?.LastName ?? "";
 
                 Repository.Save(foundUser);
                 return Ok();
             }
             return NotFound();
-        }
-
-        private static Dto.User? ToDto(Data.User? user)
-        {
-            if (user is null) return null;
-            return new Dto.User
-            {
-                FirstName = user.FirstName,
-                Id = user.Id,
-                LastName = user.LastName
-            };
-        }
-
-        public static Data.User? FromDto(Dto.User? user)
-        {
-            if (user is null) return null;
-            return new Data.User
-            {
-                Id = user.Id,
-                FirstName = user.FirstName ?? "",
-                LastName = user.LastName ?? ""
-            };
         }
     }
 }

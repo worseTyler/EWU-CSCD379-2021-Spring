@@ -11,4 +11,5 @@ namespace SecretSanta.Business
         User Create(User item);
         void Save(User item);
     }
+
 }
