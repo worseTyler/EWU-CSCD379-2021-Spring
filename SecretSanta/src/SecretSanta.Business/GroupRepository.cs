@@ -45,5 +45,39 @@ namespace SecretSanta.Business
 
             MockData.Groups[item.Id] = item;
         }
+
+        public AssignmentResult GenerateAssignments(int groupId)
+        {
+            if (!MockData.Groups.TryGetValue(groupId, out Group? group))
+            {
+                return AssignmentResult.Error("Group not found");
+            }
+
+            Random random = new();
+            var groupUsers = new List<User>(group.Users);
+
+            if (groupUsers.Count < 3)
+            {
+                return AssignmentResult.Error($"Group {group.Name} must have at least three users");
+            }
+
+            var users = new List<User>();
+            //Put the users in a random order
+            while(groupUsers.Count > 0)
+            {
+                int index = random.Next(groupUsers.Count);
+                users.Add(groupUsers[index]);
+                groupUsers.RemoveAt(index);
+            }
+
+            //The assignments are created by linking the current user to the next user.
+            group.Assignments.Clear();
+            for(int i = 0; i < users.Count; i++)
+            {
+                int endIndex = (i + 1) % users.Count;
+                group.Assignments.Add(new Assignment(users[i], users[endIndex]));
+            }
+            return AssignmentResult.Success();
+        }
     }
 }
