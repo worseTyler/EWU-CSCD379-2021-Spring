@@ -4,6 +4,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using SecretSanta.Business;
+using SecretSanta.Data;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -108,6 +109,21 @@ namespace SecretSanta.Api.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+
+        [HttpPut("generateAssignments/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.MethodNotAllowed)]        
+        public ActionResult GenerateAssignments(int id)
+        {
+            var response = GroupRepository.GenerateAssignments(id);
+            if(response.IsSuccess)
+                return Ok();
+            
+            return NotFound(new
+            {
+                Title = response.ErrorMessage
+            });
         }
     }
 }
