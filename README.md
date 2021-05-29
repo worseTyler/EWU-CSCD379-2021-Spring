@@ -9,8 +9,10 @@ In this assignment we are going to build "complete" the SecretSanta project. As 
 - Configure all data to be stored in an SqLite Database using the Entity Framework.
   - Hint: Add a Gift object to the SecretSanta.Data project
   - Hint: Update `Group` and `Assignment` to persist as a many-to-many relationship
-- Provide UI functionality for a complete Secret Santa functionality 
-  including
+  - All tables must have a primary key
+  - All tables mush have an unique/alternate key (other than the primary key)
+- Provide UI functionality for a complete Secret Santa functionality.
+  This includes:
   - The ability for a user to add a list of gifts
   - Displaying who a user's secret santa is for in each group.
   - Viewing all gifts requested by your secret santa
