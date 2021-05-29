@@ -1,24 +1,28 @@
-﻿In this assignment we are going to build out some of the logic needed for Secret Santa.
-There have been several updates to the SecretSanta repository.
-Key changes to be aware of:
-- The data project has been expanded and contains users for groups and a new Assignment class.
-- There is a new `GroupRepository` added to the business project.
-- The gifts section links has been removed from the web project. The pages are still present but should not be needed.
-- Opening the "edit" page of a group now also shows the users in a group, and has separate controls for editing the group and adding and removing users from the group.
-- No additional Web or E2E tests are needed for this assignment.
+﻿# Assignment 9 & 10
 
-# Assignment
-- Update the `GroupRepository` with functionality to generate gift assignments. ✔❌
-  - A group with with 2 or fewer users should result in an error. This error should be displayed to a user. ✔❌
-  - A user is not allowed to be both the Giver and Recipient of the assignment. ✔❌
-- Update the GroupsController with an endpoint for generating the assignments. ✔❌
-- Update the Groups/Edit page to contain the UI elements for the following
-  - A means to generate assignments. ✔❌
-  - A means to display any errors that occurs while generating assignments. ✔❌
-  - Display of the assignments for each of the users. ✔❌
-- Write appropriate unit tests for changes made to the `GroupRepository` ✔❌
-- Write appropriate functional tests for the change made to the `GroupsController` ✔❌
+## Overview
+
+In this assignment we are going to build "complete" the SecretSanta project. As discussed in class on Thursday, you have two weeks to complete the assignment which is worth "double the points".
+
+## Assignment
+
+- Configure all data to be stored in an SqLite Database using the Entity Framework.
+  - Hint: Add a Gift object to the SecretSanta.Data project
+  - Hint: Update `Group` and `Assignment` to persist as a many-to-many relationship
+- Provide UI functionality for a complete Secret Santa functionality 
+  including
+  - The ability for a user to add a list of gifts
+  - Displaying who a user's secret santa is for in each group.
+  - Viewing all gifts requested by your secret santa
+- Remove the MockData class and replace it with sample data that gets deployed into the database following a migration when the command "DeploySampleData" is specified on the command line.
+- Allow for the connection string (db path) for the SqLite database to be provided using `Microsoft.Extensions.Coniguration`:
+  - Default to main.db in the same directory as the SecretSanta.Data assembly.
+  - Allow for an environment variable called to override the defaiult connection string
+  - Allow a connection string passed on the command line to take precidence over the environment variable.
+- Add some minimal rudimentary logging using `Microsoft.Extensions.Logging`:
+- Configure the Entity Framework to log to a dblog.log file (located in the SecretSanta.Data assembly directory) with the category name "Database".
+- GitHub Action CI/CD Build
+  - Ensure all tests (unit test, end to end tests, etc.) are running in your GitHub Action build and include a URL to the build in your executing GitHub action in your pull request.
+  - Ensure website is deployed by your GitHub Action and proivde URL to the deployed site in your pull request.
 
 ## Extra Credit
-- There is currently no way to for a user to add gifts. On the edit user page add functionality to be able to add a gift to the user. ✔❌
-- Allow for navigating to a user from the Group edit page to make it easy to see the gifts requested by a user. ✔❌
