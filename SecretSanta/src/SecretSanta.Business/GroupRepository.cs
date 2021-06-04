@@ -13,7 +13,7 @@ namespace SecretSanta.Business
                 throw new ArgumentNullException(nameof(item));
             }
 
-            MockData.Groups[item.Id] = item;
+            MockData.Groups[item.GroupId] = item;
             return item;
         }
 
@@ -43,7 +43,7 @@ namespace SecretSanta.Business
                 throw new ArgumentNullException(nameof(item));
             }
 
-            MockData.Groups[item.Id] = item;
+            MockData.Groups[item.GroupId] = item;
         }
 
         public AssignmentResult GenerateAssignments(int groupId)
@@ -75,7 +75,10 @@ namespace SecretSanta.Business
             for(int i = 0; i < users.Count; i++)
             {
                 int endIndex = (i + 1) % users.Count;
-                group.Assignments.Add(new Assignment(users[i], users[endIndex]));
+                group.Assignments.Add(new Assignment(){
+                    Giver = users[i],
+                    Receiver = users[endIndex]
+                });
             }
             return AssignmentResult.Success();
         }
