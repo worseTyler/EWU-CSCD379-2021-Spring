@@ -14,9 +14,8 @@ namespace SecretSanta.Data
     {
         public string ConnectionString {get; init;}
         public DbContext(string connectionString)
-            : base(new DbContextOptionsBuilder<DbContext>().UseSqlite("Data Source=main.db").Options)
         {
-            ConnectionString = connectionString ?? throw new ArgumentNullException($"{nameof(connectionString)} was null");
+            ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

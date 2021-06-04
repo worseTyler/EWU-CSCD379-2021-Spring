@@ -34,7 +34,7 @@ namespace SecretSanta.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Assignment",
+                name: "Assignments",
                 columns: table => new
                 {
                     AssignmentId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -45,21 +45,21 @@ namespace SecretSanta.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Assignment", x => x.AssignmentId);
+                    table.PrimaryKey("PK_Assignments", x => x.AssignmentId);
                     table.ForeignKey(
-                        name: "FK_Assignment_Groups_GroupId",
+                        name: "FK_Assignments_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "GroupId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Assignment_Users_GiverUserId",
+                        name: "FK_Assignments_Users_GiverUserId",
                         column: x => x.GiverUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Assignment_Users_ReceiverUserId",
+                        name: "FK_Assignments_Users_ReceiverUserId",
                         column: x => x.ReceiverUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -67,7 +67,7 @@ namespace SecretSanta.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Gift",
+                name: "Gifts",
                 columns: table => new
                 {
                     GiftId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -80,9 +80,9 @@ namespace SecretSanta.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Gift", x => x.GiftId);
+                    table.PrimaryKey("PK_Gifts", x => x.GiftId);
                     table.ForeignKey(
-                        name: "FK_Gift_Users_UserId",
+                        name: "FK_Gifts_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -138,23 +138,23 @@ namespace SecretSanta.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignment_GiverUserId",
-                table: "Assignment",
+                name: "IX_Assignments_GiverUserId",
+                table: "Assignments",
                 column: "GiverUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignment_GroupId",
-                table: "Assignment",
+                name: "IX_Assignments_GroupId",
+                table: "Assignments",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignment_ReceiverUserId",
-                table: "Assignment",
+                name: "IX_Assignments_ReceiverUserId",
+                table: "Assignments",
                 column: "ReceiverUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gift_UserId",
-                table: "Gift",
+                name: "IX_Gifts_UserId",
+                table: "Gifts",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -171,10 +171,10 @@ namespace SecretSanta.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Assignment");
+                name: "Assignments");
 
             migrationBuilder.DropTable(
-                name: "Gift");
+                name: "Gifts");
 
             migrationBuilder.DropTable(
                 name: "GroupUser");
