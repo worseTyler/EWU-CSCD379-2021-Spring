@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SecretSanta.Data;
 
 namespace SecretSanta.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20210604184624_AlternateKey")]
+    partial class AlternateKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +39,10 @@ namespace SecretSanta.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("GiverReceiver")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("GiverUserId")
                         .HasColumnType("INTEGER");
 
@@ -47,6 +53,8 @@ namespace SecretSanta.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("AssignmentId");
+
+                    b.HasAlternateKey("GiverReceiver");
 
                     b.HasIndex("GiverUserId");
 
@@ -139,26 +147,6 @@ namespace SecretSanta.Data.Migrations
                     b.HasAlternateKey("FirstName", "LastName");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            FirstName = "Tyler",
-                            LastName = "Jones"
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            FirstName = "Jeff",
-                            LastName = "Peterson"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            FirstName = "Luke",
-                            LastName = "Post"
-                        });
                 });
 
             modelBuilder.Entity("GroupUser", b =>

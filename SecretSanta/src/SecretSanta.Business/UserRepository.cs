@@ -1,48 +1,62 @@
 ﻿using System.Collections.Generic;
 using SecretSanta.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Business
 {
     public class UserRepository : IUserRepository
     {
-        public User Create(User item)
+        private readonly DbContext DbContext;
+
+        public UserRepository(DbContext dbContext)
+        {
+            DbContext = dbContext ?? throw new System.ArgumentNullException(nameof(dbContext));
+        }
+
+        public async Task<User> Create(User item)
         {
             if (item is null)
             {
                 throw new System.ArgumentNullException(nameof(item));
             }
 
-            MockData.Users[item.UserId] = item;
+            DbContext.Users.Add(item);
+            await DbContext.SaveChangesAsync();
             return item;
         }
 
-        public User? GetItem(int id)
+        public async Task<User?> GetItem(int id)
         {
-            if (MockData.Users.TryGetValue(id, out User? user))
-            {
-                return user;
-            }
-            return null;
+            return await DbContext.Users.FindAsync(id);
         }
 
         public ICollection<User> List()
         {
-            return MockData.Users.Values;
+            return DbContext.Users.ToList();
         }
 
-        public bool Remove(int id)
+        public async Task<bool> Remove(int id)
         {
-            return MockData.Users.Remove(id);
+            User? user = await GetItem(id);
+            if(user is not null)
+            {
+                DbContext.Users.Remove(user);
+                await DbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public void Save(User item)
+        public async Task Save(User item)
         {
             if (item is null)
             {
                 throw new System.ArgumentNullException(nameof(item));
             }
-
-            MockData.Users[item.UserId] = item;
+            await Remove(item.UserId);
+            DbContext.Users.Add(item);
+            await DbContext.SaveChangesAsync();
         }
     }
 }

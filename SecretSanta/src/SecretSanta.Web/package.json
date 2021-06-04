@@ -4,10 +4,10 @@
   "description": "",
   "engines": {
     "node": "14",
-    "npm":"6"
+    "npm": "6"
   },
   "scripts": {
-    "build:prod":"cross-env NODE_ENV=production & webpack --mode production",
+    "build:prod": "cross-env NODE_ENV=production & webpack --mode production",
     "build:prodOS": "run-script-os",
     "build:dev": "check-node-version --package & webpack --mode development --watch",
     "build:prod:linux": "export NODE_ENV=production && webpack --mode production",

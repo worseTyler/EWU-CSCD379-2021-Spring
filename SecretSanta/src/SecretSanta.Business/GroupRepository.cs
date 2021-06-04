@@ -1,54 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using SecretSanta.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Business
 {
     public class GroupRepository : IGroupRepository
     {
-        public Group Create(Group item)
+        private readonly DbContext DbContext;
+        public GroupRepository(DbContext dbContext)
+        {
+            DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+
+        public async Task<Group> Create(Group item)
         {
             if (item is null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            MockData.Groups[item.GroupId] = item;
+            await DbContext.Groups.AddAsync(item);
+            await DbContext.SaveChangesAsync();
             return item;
         }
 
-        public Group? GetItem(int id)
+        public async Task<Group?> GetItem(int id)
         {
-            if (MockData.Groups.TryGetValue(id, out Group? user))
-            {
-                return user;
-            }
-            return null;
+            return await DbContext.Groups.FindAsync(id);
         }
 
         public ICollection<Group> List()
         {
-            return MockData.Groups.Values;
+            return DbContext.Groups.ToList();
         }
 
-        public bool Remove(int id)
+        public async Task<bool> Remove(int id)
         {
-            return MockData.Groups.Remove(id);
+            Group group = DbContext.Groups.Find(typeof(Group), id);
+            if(group is not null)
+            {
+                DbContext.Groups.Remove(group);
+                await DbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public void Save(Group item)
+        public async Task Save(Group item)
         {
             if (item is null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
-            MockData.Groups[item.GroupId] = item;
+            if (await Remove(item.GroupId))
+            {
+                await DbContext.Groups.AddAsync(item);
+                await DbContext.SaveChangesAsync();
+            }
         }
 
-        public AssignmentResult GenerateAssignments(int groupId)
+        public async Task<AssignmentResult> GenerateAssignments(int groupId)
         {
-            if (!MockData.Groups.TryGetValue(groupId, out Group? group))
+            Group group = await DbContext.Groups.FindAsync(groupId);
+            if (group is null)
             {
                 return AssignmentResult.Error("Group not found");
             }
@@ -69,7 +85,6 @@ namespace SecretSanta.Business
                 users.Add(groupUsers[index]);
                 groupUsers.RemoveAt(index);
             }
-
             //The assignments are created by linking the current user to the next user.
             group.Assignments.Clear();
             for(int i = 0; i < users.Count; i++)
@@ -79,6 +94,8 @@ namespace SecretSanta.Business
                     Giver = users[i],
                     Receiver = users[endIndex]
                 });
+                await DbContext.Assignments.AddAsync(group.Assignments[i]);
+                await DbContext.SaveChangesAsync();
             }
             return AssignmentResult.Success();
         }

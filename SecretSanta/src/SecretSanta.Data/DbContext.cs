@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DbContext = SecretSanta.Data.DbContext;
+using System.Linq;
 
 namespace SecretSanta.Data
 {
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public string ConnectionString {get; init;}
-        public DbContext(string connectionString)
-        {
-            ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-        }
+        public DbContext(DbContextOptions<DbContext> options)
+            : base(options)
+        { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(ConnectionString);
-        }
+        public DbContext()
+           : this(new DbContextOptionsBuilder<DbContext>().UseSqlite("Data Source=main.db").Options)
+        { }
+
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Group> Groups => Set<Group>();
@@ -37,8 +36,18 @@ namespace SecretSanta.Data
             }
 
             modelBuilder.Entity<GroupUser>()
-                .HasKey(gu => new{gu.GroupId, gu.UserId});
-                
+                .HasKey(gu => new { gu.GroupId, gu.UserId });
+            modelBuilder.Entity<User>()
+                .HasAlternateKey(user => new { user.FirstName, user.LastName });
+            modelBuilder.Entity<Group>()
+                .HasAlternateKey(group => group.Name);
+            modelBuilder.Entity<Gift>()
+                .HasAlternateKey(gift => new { gift.Name, gift.UserId, gift.Priority });
+
+
+            //modelBuilder.Entity<Group>().HasData(SampleData.Group);
+            modelBuilder.Entity<User>().HasData(SampleData.Users());
+
         }
     }
 }

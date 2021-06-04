@@ -37,9 +37,8 @@ namespace SecretSanta.Api
                            .AllowAnyHeader();
                 });
             });
-
-            services.AddDbContext<SecretSanta.Data.DbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SecretSantaContext")));
+            Console.WriteLine(Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<SecretSanta.Data.DbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
