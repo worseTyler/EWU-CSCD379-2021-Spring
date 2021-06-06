@@ -34,7 +34,12 @@ namespace SecretSanta.Api.Controllers
             {
                 userAssignments.Add(Dto.User.ToDto(fullUser));
             }
-            Dto.User? user = Dto.User.ToDto(await Repository.GetItem(id), userAssignments);
+            List<Dto.Gift>? gifts = new();
+            foreach(SecretSanta.Data.Gift gift in Repository.GetGifts(id))
+            {
+                gifts.Add(Dto.Gift.ToDto(gift));
+            }
+            Dto.User? user = Dto.User.ToDto(await Repository.GetItem(id), userAssignments, gifts);
             if (user is null) return NotFound();
             return user;
         }

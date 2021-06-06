@@ -58,6 +58,10 @@ namespace SecretSanta.Business
             }
             return users;
         }
+        public List<Gift> GetGifts(int id)
+        {
+            return DbContext.Gifts.Where(item => item.UserId == id).ToList();
+        }
         public async Task Save(User item)
         {
             if (item is null)
