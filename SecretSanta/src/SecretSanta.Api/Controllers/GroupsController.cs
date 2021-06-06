@@ -32,6 +32,16 @@ namespace SecretSanta.Api.Controllers
         {
             Dto.Group? group = Dto.Group.ToDto(await GroupRepository.GetItem(id), true);
             if (group is null) return NotFound();
+            foreach(Dto.User user in 
+                (await GroupRepository.GetUsers(id)).Select(item => Dto.User.ToDto(item)!))
+            {
+                group.Users.Add(user);
+            }
+            foreach(Dto.Assignment assignment in 
+                GroupRepository.GetAssignments(id).Select(item => Dto.Assignment.ToDto(item)!))
+            {
+                group.Assignments.Add(assignment);
+            }
             return group;
         }
 
@@ -78,14 +88,8 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult> Remove(int id, [FromBody] int userId)
         {
-            Data.Group? foundGroup = await GroupRepository.GetItem(id);
-            if (foundGroup is not null)
+            if(await GroupRepository.RemoveUser(id, userId))
             {
-                if (foundGroup.Users.FirstOrDefault(x => x.UserId == userId) is { } user)
-                {
-                    foundGroup.Users.Remove(user);
-                    await GroupRepository.Save(foundGroup);
-                }
                 return Ok();
             }
             return NotFound();
@@ -97,15 +101,7 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult> Add(int id, [FromBody] int userId)
         {
-            Data.Group? foundGroup = await GroupRepository.GetItem(id);
-            Data.User? foundUser = await UserRepository.GetItem(userId);
-            if (foundGroup is not null && foundUser is not null)
-            {
-                if (!foundGroup.Users.Any(x => x.UserId == foundUser.UserId))
-                {
-                    foundGroup.Users.Add(foundUser);
-                    await GroupRepository.Save(foundGroup);
-                }
+            if(await GroupRepository.AddUser(id, userId)){
                 return Ok();
             }
             return NotFound();

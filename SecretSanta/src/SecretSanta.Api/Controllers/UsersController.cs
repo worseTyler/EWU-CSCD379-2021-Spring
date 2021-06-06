@@ -21,13 +21,20 @@ namespace SecretSanta.Api.Controllers
         [HttpGet]
         public IEnumerable<Dto.User> Get()
         {
+
             return Repository.List().Select(x => Dto.User.ToDto(x)!);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Dto.User?>> Get(int id)
         {
-            Dto.User? user = Dto.User.ToDto(await Repository.GetItem(id));
+            List<Dto.User>? userAssignments = new();
+            foreach(SecretSanta.Data.User fullUser in 
+                (await Repository.GetAssignmentUsers(id)))
+            {
+                userAssignments.Add(Dto.User.ToDto(fullUser));
+            }
+            Dto.User? user = Dto.User.ToDto(await Repository.GetItem(id), userAssignments);
             if (user is null) return NotFound();
             return user;
         }

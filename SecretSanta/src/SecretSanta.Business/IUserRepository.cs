@@ -10,6 +10,7 @@ namespace SecretSanta.Business
         Task<User?> GetItem(int id);
         Task<bool> Remove(int id);
         Task<User> Create(User item);
+        Task<List<User>> GetAssignmentUsers(int id);
         Task Save(User item);
     }
 

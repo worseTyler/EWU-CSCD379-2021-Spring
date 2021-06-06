@@ -37,7 +37,6 @@ namespace SecretSanta.Api
                            .AllowAnyHeader();
                 });
             });
-            Console.WriteLine(Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<SecretSanta.Data.DbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 

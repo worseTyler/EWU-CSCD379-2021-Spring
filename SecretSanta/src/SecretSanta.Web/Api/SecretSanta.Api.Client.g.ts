@@ -848,6 +848,8 @@ export class User implements IUser {
     id!: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    assignmentList!: User[];
+    giftList!: Gift[];
 
     constructor(data?: IUser) {
         if (data) {
@@ -856,6 +858,10 @@ export class User implements IUser {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+        if (!data) {
+            this.assignmentList = [];
+            this.giftList = [];
+        }
     }
 
     init(_data?: any) {
@@ -863,6 +869,16 @@ export class User implements IUser {
             this.id = _data["id"];
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
+            if (Array.isArray(_data["assignmentList"])) {
+                this.assignmentList = [] as any;
+                for (let item of _data["assignmentList"])
+                    this.assignmentList!.push(User.fromJS(item));
+            }
+            if (Array.isArray(_data["giftList"])) {
+                this.giftList = [] as any;
+                for (let item of _data["giftList"])
+                    this.giftList!.push(Gift.fromJS(item));
+            }
         }
     }
 
@@ -878,6 +894,16 @@ export class User implements IUser {
         data["id"] = this.id;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
+        if (Array.isArray(this.assignmentList)) {
+            data["assignmentList"] = [];
+            for (let item of this.assignmentList)
+                data["assignmentList"].push(item.toJSON());
+        }
+        if (Array.isArray(this.giftList)) {
+            data["giftList"] = [];
+            for (let item of this.giftList)
+                data["giftList"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -886,6 +912,52 @@ export interface IUser {
     id: number;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    assignmentList: User[];
+    giftList: Gift[];
+}
+
+export class Gift implements IGift {
+    name?: string | undefined;
+    url?: string | undefined;
+    priority!: number;
+
+    constructor(data?: IGift) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.url = _data["url"];
+            this.priority = _data["priority"];
+        }
+    }
+
+    static fromJS(data: any): Gift {
+        data = typeof data === 'object' ? data : {};
+        let result = new Gift();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["url"] = this.url;
+        data["priority"] = this.priority;
+        return data; 
+    }
+}
+
+export interface IGift {
+    name?: string | undefined;
+    url?: string | undefined;
+    priority: number;
 }
 
 export class Assignment implements IAssignment {

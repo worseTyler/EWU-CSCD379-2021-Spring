@@ -18,7 +18,7 @@ namespace SecretSanta.Data
         { }
 
         public DbContext()
-           : this(new DbContextOptionsBuilder<DbContext>().UseSqlite("Data Source=main.db").Options)
+           : base(new DbContextOptionsBuilder<DbContext>().UseSqlite("Data Source=main.db").Options)
         { }
 
 
@@ -37,12 +37,12 @@ namespace SecretSanta.Data
 
             modelBuilder.Entity<GroupUser>()
                 .HasKey(gu => new { gu.GroupId, gu.UserId });
-            modelBuilder.Entity<User>()
-                .HasAlternateKey(user => new { user.FirstName, user.LastName });
-            modelBuilder.Entity<Group>()
-                .HasAlternateKey(group => group.Name);
-            modelBuilder.Entity<Gift>()
-                .HasAlternateKey(gift => new { gift.Name, gift.UserId, gift.Priority });
+            // modelBuilder.Entity<User>()
+            //     .HasAlternateKey(user => new { user.FirstName, user.LastName });
+            // modelBuilder.Entity<Group>()
+            //     .HasAlternateKey(group => group.Name);
+            // modelBuilder.Entity<Gift>()
+            //     .HasAlternateKey(gift => new { gift.Name, gift.UserId, gift.Priority });
 
 
             //modelBuilder.Entity<Group>().HasData(SampleData.Group);

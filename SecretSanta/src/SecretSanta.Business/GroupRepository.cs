@@ -38,7 +38,7 @@ namespace SecretSanta.Business
 
         public async Task<bool> Remove(int id)
         {
-            Group group = DbContext.Groups.Find(typeof(Group), id);
+            Group group = DbContext.Groups.Find(id);
             if(group is not null)
             {
                 DbContext.Groups.Remove(group);
@@ -61,8 +61,72 @@ namespace SecretSanta.Business
             }
         }
 
+        public async Task<bool> AddUser(int groupId, int userId)
+        {
+            Group? group = await DbContext.Groups.FindAsync(groupId);
+            User? user = await DbContext.Users.FindAsync(userId);
+            if(user is not null && group is not null)
+            {
+                DbContext.Groups.Remove(group);
+                await DbContext.SaveChangesAsync();
+                group.Users.Add(user);
+                await DbContext.Groups.AddAsync(group);
+                await DbContext.SaveChangesAsync();
+
+                GroupUser groupUser = new(){
+                    GroupId = groupId,
+                    UserId = userId
+                };
+                await DbContext.GroupUsers.AddAsync(groupUser);
+                await DbContext.SaveChangesAsync();
+
+                group = await DbContext.Groups.FindAsync(groupId);
+                System.Console.WriteLine(group.Users.Count());
+
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> RemoveUser(int groupId, int userId)
+        {
+            Group? group = await DbContext.Groups.FindAsync(groupId);
+            User? user = await DbContext.Users.FindAsync(userId);
+            if(user is not null && group is not null)
+            {
+                GroupUser groupUser = new(){
+                    GroupId = groupId,
+                    UserId = userId
+                };
+                DbContext.GroupUsers.Remove(groupUser);
+                await DbContext.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<List<User>> GetUsers(int groupId)
+        {
+            IQueryable<GroupUser> groupUsers = DbContext.GroupUsers.Where(item => item.GroupId == groupId);
+            List<User> users = new();
+            foreach(GroupUser groupUser in groupUsers)
+            {
+                User user = await DbContext.Users.FindAsync(groupUser.UserId);
+                users.Add(user);
+            }
+            return users;
+        }
+
+        public IQueryable<Assignment> GetAssignments(int groupId)
+        {
+            return DbContext.Assignments.Where(item => item.GroupId == groupId);
+        }
+
         public async Task<AssignmentResult> GenerateAssignments(int groupId)
         {
+            IQueryable<GroupUser> manyMany = DbContext.GroupUsers.Where(item => item.GroupId == groupId);
             Group group = await DbContext.Groups.FindAsync(groupId);
             if (group is null)
             {
@@ -70,9 +134,9 @@ namespace SecretSanta.Business
             }
 
             Random random = new();
-            var groupUsers = new List<User>(group.Users);
+            var groupUsers = new List<User>((await GetUsers(groupId)).ToList());
 
-            if (groupUsers.Count < 3)
+            if (manyMany.Count() < 3)
             {
                 return AssignmentResult.Error($"Group {group.Name} must have at least three users");
             }
@@ -94,6 +158,7 @@ namespace SecretSanta.Business
                     Giver = users[i],
                     Receiver = users[endIndex]
                 });
+                System.Console.WriteLine($"Giver {group.Assignments[i].Giver.FirstName}");
                 await DbContext.Assignments.AddAsync(group.Assignments[i]);
                 await DbContext.SaveChangesAsync();
             }

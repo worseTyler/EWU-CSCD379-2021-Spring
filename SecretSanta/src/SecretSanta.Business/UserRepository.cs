@@ -47,7 +47,25 @@ namespace SecretSanta.Business
             }
             return false;
         }
-
+        public async Task<List<User>> GetAssignmentUsers(int id)
+        {
+            List<Assignment> assignments = DbContext.Assignments.Where(item => item.Giver.UserId == id).ToList();
+            System.Console.WriteLine(assignments.Count());
+            List<User> users = new();
+            foreach(Assignment assignment in assignments)
+            {
+                if(assignment.Giver is null){
+                    System.Console.WriteLine("This is null");
+                } else{
+                    System.Console.WriteLine(assignment.Giver.FirstName);
+                }
+                //User? user = await DbContext.Users.FindAsync(assignment.Receiver.UserId);
+                // if(user is not null){
+                //     users.Add(user);
+                // }
+            }
+            return users;
+        }
         public async Task Save(User item)
         {
             if (item is null)
