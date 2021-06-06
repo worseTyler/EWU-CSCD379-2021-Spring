@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SecretSanta.Data;
 
 namespace SecretSanta.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20210604191933_SomeSampleData2")]
+    partial class SomeSampleData2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +42,7 @@ namespace SecretSanta.Data.Migrations
                     b.Property<int?>("GiverUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ReceiverUserId")
@@ -81,6 +83,8 @@ namespace SecretSanta.Data.Migrations
 
                     b.HasKey("GiftId");
 
+                    b.HasAlternateKey("Name", "UserId", "Priority");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Gifts");
@@ -97,6 +101,8 @@ namespace SecretSanta.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("GroupId");
+
+                    b.HasAlternateKey("Name");
 
                     b.ToTable("Groups");
                 });
@@ -131,6 +137,8 @@ namespace SecretSanta.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
+
+                    b.HasAlternateKey("FirstName", "LastName");
 
                     b.ToTable("Users");
 
@@ -178,9 +186,7 @@ namespace SecretSanta.Data.Migrations
 
                     b.HasOne("SecretSanta.Data.Group", null)
                         .WithMany("Assignments")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("SecretSanta.Data.User", "Receiver")
                         .WithMany()

@@ -25,6 +25,7 @@ namespace SecretSanta.Api
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGiftRepository, GiftRepository>();
             services.AddControllers();
             services.AddSwaggerDocument();
 
@@ -37,9 +38,7 @@ namespace SecretSanta.Api
                            .AllowAnyHeader();
                 });
             });
-
-            services.AddDbContext<SecretSanta.Data.DbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SecretSantaContext")));
+            services.AddDbContext<SecretSanta.Data.DbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

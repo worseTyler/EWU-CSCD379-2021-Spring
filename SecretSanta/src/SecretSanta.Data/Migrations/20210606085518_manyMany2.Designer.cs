@@ -9,8 +9,8 @@ using SecretSanta.Data;
 namespace SecretSanta.Data.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20210604043525_Update1")]
-    partial class Update1
+    [Migration("20210606085518_manyMany2")]
+    partial class manyMany2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace SecretSanta.Data.Migrations
                     b.Property<int?>("GiverUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int>("GroupId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ReceiverUserId")
@@ -135,6 +135,26 @@ namespace SecretSanta.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            FirstName = "Tyler",
+                            LastName = "Jones"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            FirstName = "Jeff",
+                            LastName = "Peterson"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            FirstName = "Luke",
+                            LastName = "Post"
+                        });
                 });
 
             modelBuilder.Entity("GroupUser", b =>
@@ -160,7 +180,9 @@ namespace SecretSanta.Data.Migrations
 
                     b.HasOne("SecretSanta.Data.Group", null)
                         .WithMany("Assignments")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SecretSanta.Data.User", "Receiver")
                         .WithMany()
