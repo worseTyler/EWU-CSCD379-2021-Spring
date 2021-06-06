@@ -50,7 +50,11 @@ export function setupUsers() {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async getAssignments(currentUser: User) {
+            return currentUser.assignmentList;
         }
+
     }
 }
 
