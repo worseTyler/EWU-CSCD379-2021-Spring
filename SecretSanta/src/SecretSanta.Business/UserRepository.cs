@@ -49,20 +49,12 @@ namespace SecretSanta.Business
         }
         public async Task<List<User>> GetAssignmentUsers(int id)
         {
-            List<Assignment> assignments = DbContext.Assignments.Where(item => item.Giver.UserId == id).ToList();
-            System.Console.WriteLine(assignments.Count());
+            IQueryable<int> assignments = DbContext.Assignments.Where(item => item.Giver.UserId == id).Select(item => item.Receiver.UserId); // this is SOOOOOOOOOO gross
             List<User> users = new();
-            foreach(Assignment assignment in assignments)
+            foreach(int receiverId in assignments)
             {
-                if(assignment.Giver is null){
-                    System.Console.WriteLine("This is null");
-                } else{
-                    System.Console.WriteLine(assignment.Giver.FirstName);
-                }
-                //User? user = await DbContext.Users.FindAsync(assignment.Receiver.UserId);
-                // if(user is not null){
-                //     users.Add(user);
-                // }
+                User user = await DbContext.Users.FindAsync(receiverId); // EWWWWWWWWWW
+                users.Add(user);
             }
             return users;
         }

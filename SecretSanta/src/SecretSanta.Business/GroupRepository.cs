@@ -67,12 +67,6 @@ namespace SecretSanta.Business
             User? user = await DbContext.Users.FindAsync(userId);
             if(user is not null && group is not null)
             {
-                DbContext.Groups.Remove(group);
-                await DbContext.SaveChangesAsync();
-                group.Users.Add(user);
-                await DbContext.Groups.AddAsync(group);
-                await DbContext.SaveChangesAsync();
-
                 GroupUser groupUser = new(){
                     GroupId = groupId,
                     UserId = userId
@@ -126,6 +120,7 @@ namespace SecretSanta.Business
 
         public async Task<AssignmentResult> GenerateAssignments(int groupId)
         {
+            await RemovePreviousAssignments(groupId);
             IQueryable<GroupUser> manyMany = DbContext.GroupUsers.Where(item => item.GroupId == groupId);
             Group group = await DbContext.Groups.FindAsync(groupId);
             if (group is null)
@@ -163,6 +158,16 @@ namespace SecretSanta.Business
                 await DbContext.SaveChangesAsync();
             }
             return AssignmentResult.Success();
+        }
+
+        private async Task RemovePreviousAssignments(int groupId)
+        {
+            IQueryable<Assignment> assignments = DbContext.Assignments.Where(item => item.GroupId == groupId);
+            foreach(Assignment assignment in assignments)
+            {
+                DbContext.Assignments.Remove(assignment);
+            }
+            await DbContext.SaveChangesAsync();
         }
     }
 }

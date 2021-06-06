@@ -37,6 +37,14 @@ namespace SecretSanta.Data
 
             modelBuilder.Entity<GroupUser>()
                 .HasKey(gu => new { gu.GroupId, gu.UserId });
+            
+            modelBuilder.Entity<GroupUser>()
+                .HasOne(gu => gu.Group)
+                .WithMany(u => u.GroupUser);
+
+            modelBuilder.Entity<GroupUser>()
+                .HasOne(gu => gu.User)
+                .WithMany(u => u.GroupUser);
             // modelBuilder.Entity<User>()
             //     .HasAlternateKey(user => new { user.FirstName, user.LastName });
             // modelBuilder.Entity<Group>()
