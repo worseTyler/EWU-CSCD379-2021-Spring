@@ -88,6 +88,14 @@ export function createOrUpdateUser() {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async createGift(){
+            try {
+                const client = new UsersClient(apiHost);
+                window.location.href='/users';
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
