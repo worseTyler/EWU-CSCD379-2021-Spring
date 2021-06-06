@@ -41,6 +41,17 @@ namespace SecretSanta.Business
             Group group = DbContext.Groups.Find(id);
             if(group is not null)
             {
+                List<GroupUser> groupUsers = DbContext.GroupUsers.Where(item => item.GroupId == id).ToList();
+                foreach(GroupUser groupUser in groupUsers)
+                {
+                    DbContext.GroupUsers.Remove(groupUser);
+                }
+                List<Assignment> assignments = DbContext.Assignments.Where(item => item.GroupId == id).ToList();
+                foreach(Assignment assignment in assignments)
+                {
+                    DbContext.Assignments.Remove(assignment);
+                }
+                await DbContext.SaveChangesAsync();
                 DbContext.Groups.Remove(group);
                 await DbContext.SaveChangesAsync();
                 return true;
@@ -95,6 +106,12 @@ namespace SecretSanta.Business
                 };
                 DbContext.GroupUsers.Remove(groupUser);
                 await DbContext.SaveChangesAsync();
+                if(DbContext.GroupUsers.Where(item => item.GroupId == groupId).Count() < 3)
+                {
+                    await RemovePreviousAssignments(groupId);
+                } else{
+                    await GenerateAssignments(groupId);
+                }
 
                 return true;
             }
